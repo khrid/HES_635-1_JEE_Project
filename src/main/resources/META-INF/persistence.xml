@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+
+	<persistence-unit name="bankPU">
+		<jta-data-source>java:/labsDS</jta-data-source>
+		
+		<class>ch.hevs.businessobject.Client</class>
+		<class>ch.hevs.businessobject.Account</class>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" /> 
+			<property name="dialect" value="org.hibernate.dialect.HSQLDialect"/>
+
+		</properties>
+	</persistence-unit>
+</persistence>

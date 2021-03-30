@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+    <ui:define name="content">
+    	<h:form>
+        	<h:outputLabel value="Transfer Information:"></h:outputLabel>
+        	<br></br>
+        	<h:panelGrid columns="5">
+        		<h:outputText value="source: "></h:outputText>
+        		<h:outputText value="client: "></h:outputText>
+	        	<h:selectOneMenu value="#{transferBean.sourceClientName}" valueChangeListener="#{transferBean.updateSourceAccounts}" onchange="submit()">
+	        		<f:selectItems value="#{transferBean.clientNames}"/>
+	        	</h:selectOneMenu>
+	        	<h:outputText value="account: "></h:outputText>
+	        	<h:selectOneMenu value="#{transferBean.sourceAccountDescription}">
+	        		<f:selectItems value="#{transferBean.sourceAccountDescriptions}"/>
+	        	</h:selectOneMenu>
+	        	<h:outputText value="destination: "></h:outputText>
+        		<h:outputText value="client: "></h:outputText>
+	        	<h:selectOneMenu value="#{transferBean.destinationClientName}" valueChangeListener="#{transferBean.updateDestinationAccounts}" onchange="submit()">
+	        		<f:selectItems value="#{transferBean.clientNames}"/>
+	        	</h:selectOneMenu>
+	        	<h:outputText value="account: "></h:outputText>
+	        	<h:selectOneMenu value="#{transferBean.destinationAccountDescription}">
+	        		<f:selectItems value="#{transferBean.destinationAccountDescriptions}"/>
+	        	</h:selectOneMenu>
+	        	<h:outputText value="amount:"></h:outputText>
+                <h:inputText value="#{transferBean.transactionAmount}" maxlength="6" style="width: 40px;"></h:inputText>
+        	</h:panelGrid>
+     		<h:commandButton value="transfer" action="#{transferBean.performTransfer}"></h:commandButton>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
