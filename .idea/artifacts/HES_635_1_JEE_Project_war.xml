@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="HES_635-1_JEE_Project:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>HES_635-1_JEE_Project</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="HES_635-1_JEE_Project-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="HES_635-1_JEE_Project:war exploded" />
+    </root>
+  </artifact>
+</component>
