@@ -10,6 +10,7 @@
 
 		<class>ch.hevs.businessobject.Country</class>
 		<class>ch.hevs.businessobject.League</class>
+		<class>ch.hevs.businessobject.Team</class>
 		<properties>
 			<property name="wildfly.jpa.default-unit" value="true"/>
 			<property name="hibernate.hbm2ddl.auto" value="update" />
@@ -23,6 +24,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>ch.hevs.businessobject.Country</class>
 		<class>ch.hevs.businessobject.League</class>
+		<class>ch.hevs.businessobject.Team</class>
 		<properties>
 			<property name="hibernate.connection.url"
 					  value="jdbc:hsqldb:hsql://localhost/DB" />

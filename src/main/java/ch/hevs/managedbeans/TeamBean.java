@@ -9,8 +9,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.util.List;
 
-public class LeagueBean {
-    private List<League> leagues;
+public class TeamBean {
     private List<Team> teams;
     private Football football;
 
@@ -21,11 +20,11 @@ public class LeagueBean {
         InitialContext ctx = new InitialContext();
         football = (Football) ctx.lookup("java:global/HES_635-1_JEE_Project-1.0-SNAPSHOT/FootballBean!ch.hevs.footballservice.Football");
 
-        leagues = football.getLeagues();
+        teams = football.getTeams();
     }
 
-    public List<League> getLeagues() {
-        System.out.println("LeagueBean - getLeagues");
-        return leagues;
+    public List<Team> getTeams() {
+        System.out.println("TeamBean - getTeams");
+        return teams;
     }
 }

@@ -1,6 +1,9 @@
 package ch.hevs.businessobject;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class League {
@@ -19,6 +22,9 @@ public class League {
     @Column(name="country")
     private Country country;
 
+    @OneToMany(mappedBy = "currentLeague")
+    private List<Team> teams;
+
     // getter and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -32,6 +38,10 @@ public class League {
     public Country getCountry() { return country; }
     public void setCountry(Country country) { this.country = country; }
 
+    public List<Team> getTeams() { return teams; }
+    public void setTeams(List<Team> teams) { this.teams = teams; }
+
+
     // constructors
     public League() {
 
@@ -41,6 +51,12 @@ public class League {
         this.name = name;
         this.division = division;
         this.country = country;
+        this.teams = new ArrayList<>();
+    }
+
+    public void addTeam(Team team) {
+        teams.add(team);
+        team.setCurrentLeague(this);
     }
 
     @Override

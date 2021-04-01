@@ -9,6 +9,11 @@
 		<managed-bean-class>ch.hevs.managedbeans.LeagueBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>teamBean</managed-bean-name>
+		<managed-bean-class>ch.hevs.managedbeans.TeamBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 	<!--<navigation-rule>
 		<display-name>welcomeBank.xhtml</display-name>
 		<from-view-id>/_old/welcomeBank.xhtml</from-view-id>
