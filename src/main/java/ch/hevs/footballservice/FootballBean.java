@@ -21,6 +21,8 @@ public class FootballBean implements Football {
     public List<League> getLeagues() {
         Query query = em.createQuery("FROM League l");
 
+        System.out.println("FootballBean - getLeagues");
+
         return (ArrayList<League>) query.getResultList();
     }
 }

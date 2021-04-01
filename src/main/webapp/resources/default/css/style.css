@@ -1,11 +1,15 @@
 html {
     background: #ebebeb;
     font-family: "Segoe UI";
+    heigth: 100%;
+    width: 100%;
 }
 
 body {
     width: 100%;
     margin: 0px;
+    heigth: 100%;
+    width: 100%;
 }
 
 
@@ -17,6 +21,8 @@ body {
 .topnav {
     background-color: #333;
     overflow: hidden;
+    heigth: 40px;
+
 }
 
 /* Style the links inside the navigation bar */
@@ -27,18 +33,38 @@ body {
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    font-weight: bolder;
 }
 
 /* Change the color of links on hover */
 .topnav a:hover {
     background-color: #ddd;
     color: black;
+
 }
 
 /* Add a color to the active/current link */
 .topnav a.active {
-    background-color: #799dcc;
+    background-color: #72e86570;
     color: white;
+}
+
+
+#container {
+    display: flex;
+    position: absolute;
+    top: 50px; /* Header Height */
+    bottom: 0px; /* Footer Height */
+    width: 100%;
+    background: linear-gradient(rgba(255,255,255,0.66), rgba(255,255,255,0.66)), url("#{resource['default:images/background.jpg']}");
+}
+
+.content {
+    padding: 2rem;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1280px;
 }
 
 .footer {
@@ -49,5 +75,15 @@ body {
     background-color: #333333e0;
     color: white;
     text-align: center;
-    line-height: 32px;
+    line-height: 24px;
+    font-size: 12px
+}
+
+footer a {
+    text-decoration: none;
+}
+
+.footer .github {
+    heigth: 14px;
+    width: 14px;
 }

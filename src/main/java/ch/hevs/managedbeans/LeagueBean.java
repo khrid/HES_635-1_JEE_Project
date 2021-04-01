@@ -21,4 +21,10 @@ public class LeagueBean {
 
         leagues = football.getLeagues();
     }
+
+    public List<League> getLeagues() {
+        System.out.println("LeagueBean - getLeagues");
+        leagues = football.getLeagues();
+        return leagues;
+    }
 }

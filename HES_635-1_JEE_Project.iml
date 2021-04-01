@@ -25,6 +25,8 @@
         <datasource-mapping>
           <factory-entry name="bankPU" />
           <factory-entry name="bankPU_TU" />
+          <factory-entry name="footballPU" />
+          <factory-entry name="footballPU_TU" />
         </datasource-mapping>
         <naming-strategy-map />
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
