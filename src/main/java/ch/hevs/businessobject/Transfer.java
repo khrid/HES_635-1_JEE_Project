@@ -1,6 +1,8 @@
 package ch.hevs.businessobject;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -11,7 +13,7 @@ public class Transfer {
     private Long id;
 
     @Column(name="transfer_date", nullable = false)   // DATE is a reserved keyword
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToOne @JoinColumn(name="fk_player", nullable = false)
     private Player player;
@@ -22,10 +24,7 @@ public class Transfer {
     @ManyToOne @JoinColumn(name="fk_new_team", nullable = false)
     private Team newTeam;
 
-
-    public Transfer(){}
-
-    public Transfer(Date date, Player player, Team oldTeam, Team newTeam){
+    public Transfer(LocalDateTime date, Player player, Team oldTeam, Team newTeam){
         this.date=date;
         this.player=player;
         this.oldTeam=oldTeam;
@@ -41,11 +40,11 @@ public class Transfer {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

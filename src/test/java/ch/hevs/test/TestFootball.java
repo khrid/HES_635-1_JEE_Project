@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,17 +68,17 @@ public class TestFootball {
             Team fcBureFromEm = (Team) em.createQuery("from Team where name = 'FC Bure'").getSingleResult();
 
             // Création d'un nouveau Player
-            Player crittinDavid = new Player("Crittin", "David", new Date(1990,01,01),fcBureFromEm,switzerland,"Avant-centre", 9, 180, 85);
+            Player crittinDavid = new Player("Crittin", "David", LocalDate.of(1992, 1, 8), fcBureFromEm, switzerland, "Avant-centre", 9, 180, 85);
 
             // Création d'un nouveau Player
-            Player meyerSylvain = new Player("Meyer", "Sylvain", new Date(1994,06,22),fcBureFromEm,switzerland,"Défenseur", 5, 187, 75);
+            Player meyerSylvain = new Player("Meyer", "Sylvain", LocalDate.of(1994, 06, 22), fcBureFromEm, switzerland, "Défenseur", 5, 187, 75);
 
             // Persistence des Players créés
             em.persist(crittinDavid);
             em.persist(meyerSylvain);
 
             // Création d'un nouveau Transfer (les deux opérations seront faites par une méthode transactionnelle)
-            Transfer transfer = new Transfer(new Date(), crittinDavid, crittinDavid.getCurrentTeam(), fcPorrentruy);
+            Transfer transfer = new Transfer(LocalDateTime.now(), crittinDavid, crittinDavid.getCurrentTeam(), fcPorrentruy);
             crittinDavid.setCurrentTeam(fcPorrentruy);
 
             // Persistence du Transfer créé et du Player transféré
@@ -88,7 +90,7 @@ public class TestFootball {
             Team fcPorrentruyFromEm = (Team) em.createQuery("from Team where name = 'FC Porrentruy'").getSingleResult();
 
             // Création d'un nouveau Trainer
-            Trainer depeursingeAdrien = new Trainer("Depeursinge", "Adrien", new Date(1980,01,01), fcPorrentruyFromEm, switzerland, "FIFA Pro", "Principal");
+            Trainer depeursingeAdrien = new Trainer("Depeursinge", "Adrien", LocalDate.of(1980, 1, 1), fcPorrentruyFromEm, switzerland, "FIFA Pro", "Principal");
 
             // Persistence du Trainer créé
             em.persist(depeursingeAdrien);

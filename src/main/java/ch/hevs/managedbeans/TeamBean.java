@@ -15,7 +15,7 @@ public class TeamBean {
 
     @PostConstruct
     public void initialize() throws NamingException {
-        System.out.println("LeagueBean - initialize");
+        System.out.println("TeamBean - initialize");
         // use JNDI to inject reference to bank EJBB
         InitialContext ctx = new InitialContext();
         football = (Football) ctx.lookup("java:global/HES_635-1_JEE_Project-1.0-SNAPSHOT/FootballBean!ch.hevs.footballservice.Football");

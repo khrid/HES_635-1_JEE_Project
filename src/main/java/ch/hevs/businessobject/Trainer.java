@@ -2,6 +2,7 @@ package ch.hevs.businessobject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,7 +17,7 @@ public class Trainer extends Person {
 
     public Trainer(){}
 
-    public Trainer(String lastname, String firstname, Date dateOfBirth, Team currentTeam, Country nationality,
+    public Trainer(String lastname, String firstname, LocalDate dateOfBirth, Team currentTeam, Country nationality,
                    String diplomType, String role){
         super(lastname, firstname, dateOfBirth, currentTeam, nationality);
         this.diplomType=diplomType;

@@ -3,7 +3,7 @@ package ch.hevs.businessobject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -27,7 +27,7 @@ public class Player extends Person {
 
     public Player(){}
 
-    public Player(String lastname, String firstname, Date dateOfBirth, Team currentTeam, Country nationality,
+    public Player(String lastname, String firstname, LocalDate dateOfBirth, Team currentTeam, Country nationality,
                   String position, int number, int height, int weight){
         super(lastname, firstname, dateOfBirth, currentTeam, nationality);
         this.position=position;

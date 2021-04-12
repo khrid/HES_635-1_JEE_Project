@@ -1,6 +1,7 @@
 package ch.hevs.businessobject;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -17,7 +18,7 @@ public class Person {
     private String firstname;
 
     @Column(name="dateOfBirth")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @ManyToOne
     @JoinColumn(name="fk_team")
@@ -30,7 +31,7 @@ public class Person {
 
     public Person(){}
 
-    public Person(String lastname, String firstname, Date dateOfBirth, Team currentTeam, Country nationality){
+    public Person(String lastname, String firstname, LocalDate dateOfBirth, Team currentTeam, Country nationality){
         this.lastname=lastname;
         this.firstname=firstname;
         this.dateOfBirth=dateOfBirth;
@@ -63,11 +64,11 @@ public class Person {
         this.firstname = firstname;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
