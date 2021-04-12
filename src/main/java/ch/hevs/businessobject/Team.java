@@ -9,7 +9,7 @@ public class Team {
     @Id @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name="name")
+    @Column(name="name", nullable = false)
     private String name;
 
     @Column(name="stadium")
@@ -23,6 +23,12 @@ public class Team {
 
     @OneToMany(mappedBy = "currentTeam")
     private List<Person> contingent;
+
+    @OneToMany(mappedBy = "oldTeam")
+    private List<Transfer> freedPlayerTransfers;
+
+    @OneToMany(mappedBy = "newTeam")
+    private List<Transfer> recrutedPlayerTransfers;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -59,5 +65,30 @@ public class Team {
     public String getCountryAndDivisionInfo() {
         return this.currentLeague.getCountry().getCode() + " division #" + this.currentLeague.getDivision();
     }
+
+    public List<Person> getContingent() {
+        return contingent;
+    }
+
+    public void setContingent(List<Person> contingent) {
+        this.contingent = contingent;
+    }
+
+    public List<Transfer> getFreedPlayerTransfers() {
+        return freedPlayerTransfers;
+    }
+
+    public void setFreedPlayerTransfers(List<Transfer> freedPlayerTransfers) {
+        this.freedPlayerTransfers = freedPlayerTransfers;
+    }
+
+    public List<Transfer> getRecrutedPlayerTransfers() {
+        return recrutedPlayerTransfers;
+    }
+
+    public void setRecrutedPlayerTransfers(List<Transfer> recrutedPlayerTransfers) {
+        this.recrutedPlayerTransfers = recrutedPlayerTransfers;
+    }
+
 
 }

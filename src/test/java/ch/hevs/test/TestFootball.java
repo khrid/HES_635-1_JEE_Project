@@ -75,6 +75,14 @@ public class TestFootball {
             em.persist(crittinDavid);
             em.persist(meyerSylvain);
 
+            // Création d'un nouveau Transfer (les deux opérations seront faites par une méthode transactionnelle)
+            Transfer transfer = new Transfer(new Date(), crittinDavid, crittinDavid.getCurrentTeam(), fcPorrentruy);
+            crittinDavid.setCurrentTeam(fcPorrentruy);
+
+            // Persistence du Transfer créé et du Player transféré
+            em.persist(transfer);
+            em.persist(crittinDavid);
+
 
             // Test JQL, récupération d'une Team
             Team fcPorrentruyFromEm = (Team) em.createQuery("from Team where name = 'FC Porrentruy'").getSingleResult();

@@ -10,7 +10,7 @@ public class Trainer extends Person {
     @Column(name="diplomType")
     private String diplomType;
 
-    @Column(name="role")
+    @Column(name="role", nullable = false)
     private String role;
 
 

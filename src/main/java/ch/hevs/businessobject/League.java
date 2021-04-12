@@ -10,14 +10,14 @@ public class League {
     @Id @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name="name")
+    @Column(name="name", nullable = false)
     private String name;
 
-    @Column(name="division")
+    @Column(name="division", nullable = false)
     private int division;
 
     @Embedded
-    @Column(name="country")
+    @Column(name="country", nullable = false)
     private Country country;
 
     @OneToMany(mappedBy = "currentLeague")

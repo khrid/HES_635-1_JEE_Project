@@ -6,10 +6,10 @@ import javax.persistence.*;
 public class Country {
 
     // name
-    @Column(name="country_name") // vu que c'est embedded, le nom risque d'être redondant avec une table appelante
+    @Column(name="country_name", nullable = false) // vu que c'est embedded, le nom risque d'être redondant avec une table appelante
     private String name;
     // name
-    @Column(name="country_code") // vu que c'est embedded, le nom risque d'être redondant avec une table appelante
+    @Column(name="country_code", nullable = false) // vu que c'est embedded, le nom risque d'être redondant avec une table appelante
     private String code;
 
     public Country() {

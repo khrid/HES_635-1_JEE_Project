@@ -10,10 +10,10 @@ public class Person {
     @Id @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name="lastname")
+    @Column(name="lastname", nullable = false)
     private String lastname;
 
-    @Column(name="firstname")
+    @Column(name="firstname", nullable = false)
     private String firstname;
 
     @Column(name="dateOfBirth")
@@ -24,7 +24,7 @@ public class Person {
     private Team currentTeam;
 
     @Embedded
-    @Column(name="nationality")
+    @Column(name="nationality", nullable = false)
     private Country nationality;
 
 

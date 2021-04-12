@@ -2,15 +2,17 @@ package ch.hevs.businessobject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Player extends Person {
 
-    @Column(name="player_position") // position is a reserved keyword
+    @Column(name="player_position", nullable = false) // POSITION is a reserved keyword
     private String position;
 
-    @Column(name="number")
+    @Column(name="number", nullable = false)
     private int number;
 
     @Column(name="height")
@@ -18,6 +20,9 @@ public class Player extends Person {
 
     @Column(name="weight")
     private int weight;  // weight in kg
+
+    @OneToMany(mappedBy = "player")
+    private List<Transfer> transfers;
 
 
     public Player(){}
@@ -62,6 +67,14 @@ public class Player extends Person {
 
     public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    public List<Transfer> getTransfers() {
+        return transfers;
+    }
+
+    public void setTransfers(List<Transfer> transfers) {
+        this.transfers = transfers;
     }
 
 }
