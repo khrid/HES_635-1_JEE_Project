@@ -32,12 +32,15 @@ public class TestFootball {
             // Création des pays
             Country switzerland = new Country("Switzerland", "CH");
             Country england = new Country("England", "EN");
+            Country germany = new Country("Germany", "DE");
 
             // Ajout de nouvelles League
             leagues.add(new League("Super League", 1, switzerland));
             leagues.add(new League("Challenge League", 2, switzerland));
             leagues.add(new League("Premier League", 1, england));
             leagues.add(new League("Championship", 2, england));
+            leagues.add(new League("Bundeliga", 1, germany));
+            leagues.add(new League("Bundeliga 2", 2, germany));
 
             // "Ecriture" des différentes League créées
             for (League l :
