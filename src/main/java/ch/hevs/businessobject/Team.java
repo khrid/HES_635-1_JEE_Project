@@ -1,6 +1,7 @@
 package ch.hevs.businessobject;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Team {
@@ -19,6 +20,9 @@ public class Team {
 
     @ManyToOne @JoinColumn(name="fk_league")
     private League currentLeague;
+
+    @OneToMany(mappedBy = "currentTeam")
+    private List<Person> contingent;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

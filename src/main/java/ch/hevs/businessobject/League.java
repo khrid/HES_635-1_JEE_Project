@@ -3,13 +3,11 @@ package ch.hevs.businessobject;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class League {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name="name")

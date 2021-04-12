@@ -1,7 +1,9 @@
 package ch.hevs.footballservice;
 
 import ch.hevs.businessobject.League;
+import ch.hevs.businessobject.Player;
 import ch.hevs.businessobject.Team;
+import ch.hevs.businessobject.Trainer;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,5 +34,21 @@ public class FootballBean implements Football {
         System.out.println("FootballBean - getTeams");
 
         return (ArrayList<Team>) query.getResultList();
+    }
+
+    public List<Player> getPlayers() {
+        Query query = em.createQuery("FROM Player p");
+
+        System.out.println("FootballBean - getPlayers");
+
+        return (ArrayList<Player>) query.getResultList();
+    }
+
+    public List<Trainer> getTrainers() {
+        Query query = em.createQuery("FROM Trainer t");
+
+        System.out.println("FootballBean - getTrainers");
+
+        return (ArrayList<Trainer>) query.getResultList();
     }
 }

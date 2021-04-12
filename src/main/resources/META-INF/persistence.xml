@@ -11,6 +11,9 @@
 		<class>ch.hevs.businessobject.Country</class>
 		<class>ch.hevs.businessobject.League</class>
 		<class>ch.hevs.businessobject.Team</class>
+		<class>ch.hevs.businessobject.Person</class>
+		<class>ch.hevs.businessobject.Player</class>
+		<class>ch.hevs.businessobject.Trainer</class>
 		<properties>
 			<property name="wildfly.jpa.default-unit" value="true"/>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

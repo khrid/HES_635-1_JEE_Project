@@ -1,8 +1,6 @@
 package ch.hevs.test;
 
-import ch.hevs.businessobject.Country;
-import ch.hevs.businessobject.League;
-import ch.hevs.businessobject.Team;
+import ch.hevs.businessobject.*;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
@@ -10,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TestFootball {
@@ -39,8 +38,8 @@ public class TestFootball {
             leagues.add(new League("Challenge League", 2, switzerland));
             leagues.add(new League("Premier League", 1, england));
             leagues.add(new League("Championship", 2, england));
-            leagues.add(new League("Bundeliga", 1, germany));
-            leagues.add(new League("Bundeliga 2", 2, germany));
+            leagues.add(new League("Bundesliga", 1, germany));
+            leagues.add(new League("Bundesliga 2", 2, germany));
 
             // "Ecriture" des différentes League créées
             for (League l :
@@ -62,6 +61,29 @@ public class TestFootball {
             // Persistence des Teams créées
             em.persist(fcBure);
             em.persist(fcPorrentruy);
+
+            // Test JQL, récupération d'une Team
+            Team fcBureFromEm = (Team) em.createQuery("from Team where name = 'FC Bure'").getSingleResult();
+
+            // Création d'un nouveau Player
+            Player crittinDavid = new Player("Crittin", "David", new Date(1990,01,01),fcBureFromEm,switzerland,"Avant-centre", 9, 180, 85);
+
+            // Création d'un nouveau Player
+            Player meyerSylvain = new Player("Meyer", "Sylvain", new Date(1994,06,22),fcBureFromEm,switzerland,"Défenseur", 5, 187, 75);
+
+            // Persistence des Players créés
+            em.persist(crittinDavid);
+            em.persist(meyerSylvain);
+
+
+            // Test JQL, récupération d'une Team
+            Team fcPorrentruyFromEm = (Team) em.createQuery("from Team where name = 'FC Porrentruy'").getSingleResult();
+
+            // Création d'un nouveau Trainer
+            Trainer depeursingeAdrien = new Trainer("Depeursinge", "Adrien", new Date(1980,01,01), fcPorrentruyFromEm, switzerland, "FIFA Pro", "Principal");
+
+            // Persistence du Trainer créé
+            em.persist(depeursingeAdrien);
 
             // Commit de la transaction
             tx.commit();

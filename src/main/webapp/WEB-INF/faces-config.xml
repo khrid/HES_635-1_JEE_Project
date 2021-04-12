@@ -14,6 +14,16 @@
 		<managed-bean-class>ch.hevs.managedbeans.TeamBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>playerBean</managed-bean-name>
+		<managed-bean-class>ch.hevs.managedbeans.PlayerBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>trainerBean</managed-bean-name>
+		<managed-bean-class>ch.hevs.managedbeans.TrainerBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 	<!--<navigation-rule>
 		<display-name>welcomeBank.xhtml</display-name>
 		<from-view-id>/_old/welcomeBank.xhtml</from-view-id>
