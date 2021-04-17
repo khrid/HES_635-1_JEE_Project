@@ -1,8 +1,44 @@
-<div class="topnav">
+<div class="topnav" xmlns:h="http://java.sun.com/jsf/html">
     <div class="bg"/>
-    <a class="active" href="index.xhtml"><span class="ball">&#9917;</span> Football Manager <span class="ball">&#9917;</span></a>
-    <a href="leagues.xhtml">Leagues</a>
-    <a href="teams.xhtml">Teams</a>
-    <a href="players.xhtml">Players</a>
-    <a href="trainers.xhtml">Trainers</a>
+    <a class="active" href="#{request.contextPath}/faces/index.xhtml"><span class="ball">&#9917;</span> Football Manager <span class="ball">&#9917;</span></a>
+
+    <div class="dropdown">
+        <button class="dropbtn">Leagues
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <h:outputLink value="#{request.contextPath}/faces/pages/leagues/leagues.xhtml">List</h:outputLink>
+            <a href="#">Manage</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button class="dropbtn">Teams
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <h:outputLink value="#{request.contextPath}/faces/pages/teams/teams.xhtml">List</h:outputLink>
+            <h:outputLink value="#{request.contextPath}/faces/pages/teams/manageTeams.xhtml">Manage</h:outputLink>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button class="dropbtn">Players
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <h:outputLink value="#{request.contextPath}/faces/pages/players/players.xhtml">List</h:outputLink>
+            <a href="#">Manage</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button class="dropbtn">Trainers
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <h:outputLink value="#{request.contextPath}/faces/pages/trainers/trainers.xhtml">List</h:outputLink>
+            <a href="#">Manage</a>
+        </div>
+    </div>
 </div>

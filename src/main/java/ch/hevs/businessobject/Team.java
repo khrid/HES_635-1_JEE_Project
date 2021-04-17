@@ -1,6 +1,7 @@
 package ch.hevs.businessobject;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,13 +22,16 @@ public class Team {
     @ManyToOne @JoinColumn(name="fk_league")
     private League currentLeague;
 
-    @OneToMany(mappedBy = "currentTeam")
+    @OneToOne @JoinColumn(name="fk_trainer")
+    private Trainer trainer;
+
+    @OneToMany(mappedBy = "currentTeam", cascade = CascadeType.MERGE )
     private List<Person> contingent;
 
-    @OneToMany(mappedBy = "oldTeam")
+    @OneToMany(mappedBy = "oldTeam", cascade = CascadeType.MERGE )
     private List<Transfer> freedPlayerTransfers;
 
-    @OneToMany(mappedBy = "newTeam")
+    @OneToMany(mappedBy = "newTeam", cascade = CascadeType.MERGE )
     private List<Transfer> recrutedPlayerTransfers;
 
     public Long getId() { return id; }
@@ -46,13 +50,15 @@ public class Team {
     public void setCurrentLeague(League currentLeague) { this.currentLeague = currentLeague; }
 
     public Team() {
-
     }
 
     public Team(String name, String stadium, int yearOfCreation) {
         this.name = name;
         this.stadium = stadium;
         this.yearOfCreation = yearOfCreation;
+        this.contingent = new ArrayList<>();
+        this.freedPlayerTransfers = new ArrayList<>();
+        this.recrutedPlayerTransfers = new ArrayList<>();
     }
 
     public Team(String name, String stadium, int yearOfCreation, League currentLeague) {
@@ -60,6 +66,9 @@ public class Team {
         this.stadium = stadium;
         this.yearOfCreation = yearOfCreation;
         this.currentLeague = currentLeague;
+        this.contingent = new ArrayList<>();
+        this.freedPlayerTransfers = new ArrayList<>();
+        this.recrutedPlayerTransfers = new ArrayList<>();
     }
 
     public String getCountryAndDivisionInfo() {
@@ -90,5 +99,31 @@ public class Team {
         this.recrutedPlayerTransfers = recrutedPlayerTransfers;
     }
 
+    public Trainer getTrainer() {
+        return trainer;
+    }
 
+    public void setTrainer(Trainer t) {
+        this.trainer = t;
+        t.setCurrentTeam(this);
+    }
+
+    public void addPlayer(Player p) {
+        this.contingent.add(p);
+        p.setCurrentTeam(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", stadium='" + stadium + '\'' +
+                ", yearOfCreation=" + yearOfCreation +
+                ", currentLeague=" + currentLeague +
+                //", contingent=" + contingent +
+                //", freedPlayerTransfers=" + freedPlayerTransfers +
+                //", recrutedPlayerTransfers=" + recrutedPlayerTransfers +
+                '}';
+    }
 }

@@ -20,7 +20,7 @@ public class League {
     @Column(name="country", nullable = false)
     private Country country;
 
-    @OneToMany(mappedBy = "currentLeague")
+    @OneToMany(mappedBy = "currentLeague", cascade = CascadeType.MERGE )
     private List<Team> teams;
 
     // getter and setters

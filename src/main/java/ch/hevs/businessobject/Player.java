@@ -4,36 +4,39 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Player extends Person {
 
-    @Column(name="player_position", nullable = false) // POSITION is a reserved keyword
+    @Column(name = "player_position", nullable = false) // POSITION is a reserved keyword
     private String position;
 
-    @Column(name="number", nullable = false)
+    @Column(name = "number", nullable = false)
     private int number;
 
-    @Column(name="height")
+    @Column(name = "height")
     private int height;     // height in cm
 
-    @Column(name="weight")
+    @Column(name = "weight")
     private int weight;  // weight in kg
 
     @OneToMany(mappedBy = "player")
     private List<Transfer> transfers;
 
 
-    public Player(){}
+    public Player() {
+    }
 
     public Player(String lastname, String firstname, LocalDate dateOfBirth, Team currentTeam, Country nationality,
-                  String position, int number, int height, int weight){
+                  String position, int number, int height, int weight) {
         super(lastname, firstname, dateOfBirth, currentTeam, nationality);
-        this.position=position;
-        this.number=number;
-        this.height=height;
-        this.weight=weight;
+        this.position = position;
+        this.number = number;
+        this.height = height;
+        this.weight = weight;
+        this.transfers = new ArrayList<>();
     }
 
 

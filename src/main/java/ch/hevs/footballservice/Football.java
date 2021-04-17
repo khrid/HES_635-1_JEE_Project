@@ -14,4 +14,9 @@ public interface Football {
     List<Team> getTeams();
     List<Player> getPlayers();
     List<Trainer> getTrainers();
+    List<Team> getLeagueTeams(String targetLeague);
+    Team getTeamByName(String targetTeamName);
+
+    void promoteTeam(Team team);
+    void relegateTeam(Team team);
 }

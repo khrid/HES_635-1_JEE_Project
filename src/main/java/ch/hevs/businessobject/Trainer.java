@@ -22,6 +22,7 @@ public class Trainer extends Person {
         super(lastname, firstname, dateOfBirth, currentTeam, nationality);
         this.diplomType=diplomType;
         this.role=role;
+        currentTeam.setTrainer(this);
     }
 
 
