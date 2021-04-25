@@ -24,6 +24,8 @@ public class Transfer {
     @ManyToOne @JoinColumn(name="fk_new_team", nullable = false)
     private Team newTeam;
 
+    public Transfer(){}
+
     public Transfer(LocalDateTime date, Player player, Team oldTeam, Team newTeam){
         this.date=date;
         this.player=player;

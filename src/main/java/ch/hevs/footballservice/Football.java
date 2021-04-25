@@ -1,9 +1,6 @@
 package ch.hevs.footballservice;
 
-import ch.hevs.businessobject.League;
-import ch.hevs.businessobject.Player;
-import ch.hevs.businessobject.Team;
-import ch.hevs.businessobject.Trainer;
+import ch.hevs.businessobject.*;
 
 import javax.ejb.Local;
 import java.util.List;
@@ -14,11 +11,13 @@ public interface Football {
     List<Team> getTeams();
     List<Player> getPlayers();
     List<Trainer> getTrainers();
+    List<Transfer> getTransfers();
     List<Team> getLeagueTeams(String targetLeague);
     Team getTeamByName(String targetTeamName);
 
     void promoteTeam(Team team);
     void relegateTeam(Team team);
 
+    void transferPlayer(Player player, Team newTeam);
     void updateNumber(Player player, int newNumber);
 }

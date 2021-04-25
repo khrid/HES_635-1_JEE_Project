@@ -24,6 +24,11 @@
         <managed-bean-class>ch.hevs.managedbeans.TrainerBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>transferBean</managed-bean-name>
+        <managed-bean-class>ch.hevs.managedbeans.TransferBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
     <navigation-rule>
         <display-name>manageTeams.xhtml</display-name>

@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+   <ui:define name="content">
+      <h2>Transfer a player</h2>
+      <h:form>
+         <h:outputText value="Select the player to transfer : "/>
+         <h:selectOneMenu value="#{transferBean.targetPlayer}" valueChangeListener="#{transferBean.updateTargetPlayer}"
+                          onchange="submit()">
+            <f:selectItems value="#{transferBean.playerNames}"/>
+         </h:selectOneMenu>
+         <br/>
+         <h:outputText value="Select the team's league : "/>
+         <h:selectOneMenu value="#{transferBean.targetLeague}" valueChangeListener="#{transferBean.updateTargetLeague}"
+                          onchange="submit()">
+            <f:selectItems value="#{transferBean.leagueNames}"/>
+         </h:selectOneMenu>
+         <br/>
+         <h:outputText value="Team : "/>
+         <h:selectOneMenu value="#{transferBean.targetTeamName}" valueChangeListener="#{transferBean.updateTargetTeam}"
+                  onchange="submit()">
+            <f:selectItems value="#{transferBean.targetLeagueTeamsNames}"/>
+         </h:selectOneMenu>
+         <br/>
+         <h:commandButton value="transfer" action="#{transferBean.transferPlayer}"/>
+      </h:form>
+   </ui:define>
+</ui:composition>
+</html>
