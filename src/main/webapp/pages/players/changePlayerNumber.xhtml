@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+   <ui:define name="content">
+      <h2>Change a player's number</h2>
+      <h:form>
+         <h:outputText value="Select the player to change the number : "/>
+         <h:selectOneMenu value="#{playerBean.targetPlayer}" valueChangeListener="#{playerBean.updateTargetPlayer}"
+                          onchange="submit()">
+            <f:selectItems value="#{playerBean.playerNames}"/>
+         </h:selectOneMenu>
+         <h:outputText value="number:"/>
+         <h:inputText value="#{playerBean.number}" maxlength="2" style="width: 40px;"/>
+         <h:commandButton value="update" action="#{playerBean.updateNumber}"/>
+      </h:form>
+   </ui:define>
+</ui:composition>
+</html>

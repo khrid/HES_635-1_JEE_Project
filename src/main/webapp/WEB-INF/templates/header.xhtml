@@ -3,42 +3,26 @@
     <a class="active" href="#{request.contextPath}/faces/index.xhtml"><span class="ball">&#9917;</span> Football Manager <span class="ball">&#9917;</span></a>
 
     <div class="dropdown">
-        <button class="dropbtn">Leagues
+        <button class="dropbtn">Display
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-            <h:outputLink value="#{request.contextPath}/faces/pages/leagues/leagues.xhtml">List</h:outputLink>
-            <a href="#">Manage</a>
+            <h:outputLink value="#{request.contextPath}/faces/pages/leagues/leagues.xhtml">Leagues</h:outputLink>
+            <h:outputLink value="#{request.contextPath}/faces/pages/teams/teams.xhtml">Teams</h:outputLink>
+            <h:outputLink value="#{request.contextPath}/faces/pages/trainers/trainers.xhtml">Trainers</h:outputLink>
+            <h:outputLink value="#{request.contextPath}/faces/pages/players/players.xhtml">Players</h:outputLink>
         </div>
     </div>
 
     <div class="dropdown">
-        <button class="dropbtn">Teams
+        <button class="dropbtn">Manage players
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-            <h:outputLink value="#{request.contextPath}/faces/pages/teams/teams.xhtml">List</h:outputLink>
-            <h:outputLink value="#{request.contextPath}/faces/pages/teams/manageTeams.xhtml">Manage</h:outputLink>
+            <div class="dropdown-content">
+                <h:outputLink value="#{request.contextPath}/faces/pages/players/changePlayerNumber.xhtml">Change &#128085; n#</h:outputLink>
+            </div>
         </div>
     </div>
 
-    <div class="dropdown">
-        <button class="dropbtn">Players
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <h:outputLink value="#{request.contextPath}/faces/pages/players/players.xhtml">List</h:outputLink>
-            <a href="#">Manage</a>
-        </div>
-    </div>
-
-    <div class="dropdown">
-        <button class="dropbtn">Trainers
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <h:outputLink value="#{request.contextPath}/faces/pages/trainers/trainers.xhtml">List</h:outputLink>
-            <a href="#">Manage</a>
-        </div>
-    </div>
 </div>

@@ -19,4 +19,6 @@ public interface Football {
 
     void promoteTeam(Team team);
     void relegateTeam(Team team);
+
+    void updateNumber(Player player, int newNumber);
 }

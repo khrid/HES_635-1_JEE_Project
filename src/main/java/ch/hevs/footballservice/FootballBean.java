@@ -98,4 +98,10 @@ public class FootballBean implements Football {
             System.out.println("FootballBean - relegateTeam - No league under current league.");
         }
     }
+
+    @Override
+    public void updateNumber(Player player, int newNumber) {
+        player.setNumber(newNumber);
+        em.merge(player);
+    }
 }

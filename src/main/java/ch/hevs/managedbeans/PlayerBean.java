@@ -6,12 +6,18 @@ import ch.hevs.businessobject.Team;
 import ch.hevs.footballservice.Football;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.ValueChangeEvent;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerBean {
     private List<Player> players;
+    private List<String> playerNames;
+    private String targetPlayer;
+    private Player targetPlayerObject;
+    private int number;
     private Football football;
 
     @PostConstruct
@@ -22,10 +28,64 @@ public class PlayerBean {
         football = (Football) ctx.lookup("java:global/HES_635-1_JEE_Project-1.0-SNAPSHOT/FootballBean!ch.hevs.footballservice.Football");
 
         players = football.getPlayers();
+        this.playerNames = new ArrayList<>();
+        for (Player p : players) {
+            this.playerNames.add(p.getFirstname() + " " + p.getLastname());
+        }
+        targetPlayerObject = players.get(0);
     }
 
     public List<Player> getPlayers() {
         System.out.println("PlayerBean - getPlayers");
         return players;
+    }
+
+    public String getTargetPlayer() {
+        return targetPlayer;
+    }
+
+    public void setTargetPlayer(String targetPlayer) {
+        this.targetPlayer = targetPlayer;
+    }
+
+    public Player getTargetPlayerObject() {
+        return targetPlayerObject;
+    }
+
+    public void setTargetPlayerObject(Player targetPlayerObject) {
+        this.targetPlayerObject = targetPlayerObject;
+    }
+
+    public List<String> getPlayerNames() {
+        return playerNames;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public void updateTargetPlayer(ValueChangeEvent event) {
+        System.out.println("PlayerBean - updateTargetPlayer");
+        targetPlayer = (String) event.getNewValue();
+        System.out.println(targetPlayer);
+        for (Player p :
+                players) {
+            if((p.getFirstname() + " " + p.getLastname()).equals(targetPlayer)) {
+                targetPlayerObject = p;
+                number = targetPlayerObject.getNumber();
+                System.out.println("PlayerBean - updateTargetPlayer - player updated to "+targetPlayerObject.getLastname());
+            }
+        }
+    }
+
+    public void updateNumber() {
+        if(targetPlayerObject.getNumber() == number) {
+            System.out.println("PlayerBean - updateNumber - new and old number are the same");
+        }
+        football.updateNumber(targetPlayerObject, number);
     }
 }
