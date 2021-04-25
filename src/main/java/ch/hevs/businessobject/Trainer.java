@@ -19,7 +19,7 @@ public class Trainer extends Person {
 
     public Trainer(String lastname, String firstname, LocalDate dateOfBirth, Team currentTeam, Country nationality,
                    String diplomType, String role){
-        super(lastname, firstname, dateOfBirth, currentTeam, nationality);
+        super(lastname, firstname, dateOfBirth, nationality);
         this.diplomType=diplomType;
         this.role=role;
         currentTeam.setTrainer(this);

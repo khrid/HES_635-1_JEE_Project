@@ -31,12 +31,13 @@ public class Player extends Person {
 
     public Player(String lastname, String firstname, LocalDate dateOfBirth, Team currentTeam, Country nationality,
                   String position, int number, int height, int weight) {
-        super(lastname, firstname, dateOfBirth, currentTeam, nationality);
+        super(lastname, firstname, dateOfBirth, nationality);
         this.position = position;
         this.number = number;
         this.height = height;
         this.weight = weight;
         this.transfers = new ArrayList<>();
+        currentTeam.addPlayer(this);
     }
 
 
@@ -80,4 +81,14 @@ public class Player extends Person {
         this.transfers = transfers;
     }
 
+    @Override
+    public String toString() {
+        return "Player{" +
+                "position='" + position + '\'' +
+                ", number=" + number +
+                ", height=" + height +
+                ", weight=" + weight +
+                //", transfers=" + transfers +
+                '}';
+    }
 }

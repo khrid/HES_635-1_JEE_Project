@@ -2,6 +2,7 @@ package ch.hevs.businessobject;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -31,11 +32,11 @@ public class Person {
 
     public Person(){}
 
-    public Person(String lastname, String firstname, LocalDate dateOfBirth, Team currentTeam, Country nationality){
+    public Person(String lastname, String firstname, LocalDate dateOfBirth/*, Team currentTeam*/, Country nationality){
         this.lastname=lastname;
         this.firstname=firstname;
         this.dateOfBirth=dateOfBirth;
-        this.currentTeam=currentTeam;
+        //this.currentTeam=currentTeam;
         this.nationality=nationality;
     }
 
@@ -88,5 +89,16 @@ public class Person {
         this.nationality = nationality;
     }
 
+    public int getAge() {
+        Calendar now = Calendar.getInstance();
+        Calendar birth = Calendar.getInstance();
+        birth.set(dateOfBirth.getYear(), dateOfBirth.getMonthValue()-1, dateOfBirth.getDayOfMonth());
+        int diff = now.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+        if (birth.get(Calendar.MONTH) > now.get(Calendar.MONTH) ||
+                (birth.get(Calendar.MONTH) == now.get(Calendar.MONTH) && birth.get(Calendar.DATE) > now.get(Calendar.DATE))) {
+            diff--;
+        }
+        return diff;
+    }
 
 }

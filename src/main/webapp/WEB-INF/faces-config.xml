@@ -38,6 +38,15 @@
             <to-view-id>/faces/pages/teams/showTeamToManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+
+    <navigation-rule>
+        <display-name>selectLeague.xhtml</display-name>
+        <from-view-id>/faces/pages/leagues/selectLeague.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>#{leagueBean.getStatistics}</from-outcome>
+            <to-view-id>/faces/pages/leagues/leagueStats.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     <!--<navigation-rule>
         <display-name>welcomeBank.xhtml</display-name>
         <from-view-id>/_old/welcomeBank.xhtml</from-view-id>

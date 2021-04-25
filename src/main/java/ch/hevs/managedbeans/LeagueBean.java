@@ -4,6 +4,7 @@ import ch.hevs.businessobject.League;
 import ch.hevs.businessobject.Team;
 import ch.hevs.footballservice.Football;
 
+
 import javax.annotation.PostConstruct;
 import javax.faces.event.ValueChangeEvent;
 import javax.naming.InitialContext;
@@ -21,6 +22,7 @@ public class LeagueBean {
     private List<Team> targetLeagueTeams;
     private List<String> targetLeagueTeamsNames;
     private Football football;
+    private int[] stats;
 
     @PostConstruct
     public void initialize() throws NamingException {
@@ -44,6 +46,7 @@ public class LeagueBean {
     public List<String> getLeagueNames() {
         return leagueNames;
     }
+
     public List<String> getTargetLeagueTeamsNames() {
         return targetLeagueTeamsNames;
     }
@@ -51,8 +54,9 @@ public class LeagueBean {
     public String getTargetLeague() {
         return targetLeague;
     }
-    public void setTargetLeague (final String targetLeague) {
-        this.targetLeague=targetLeague;
+
+    public void setTargetLeague(final String targetLeague) {
+        this.targetLeague = targetLeague;
     }
 
     public List<League> getLeagues() {
@@ -67,12 +71,21 @@ public class LeagueBean {
     public String getTargetTeamName() {
         return targetTeamName;
     }
+
     public void setTargetTeamName(final String targetTeamName) {
         this.targetTeamName = targetTeamName;
     }
 
     public List<Team> getTargetLeagueTeams() {
         return targetLeagueTeams;
+    }
+
+    public int[] getStats() {
+        return stats;
+    }
+
+    public void setStats(int[] stats) {
+        this.stats = stats;
     }
 
     public void updateTargetLeague(ValueChangeEvent event) {
@@ -93,7 +106,7 @@ public class LeagueBean {
     }
 
     public String promoteTeam() {
-        if(targetTeam.getCurrentLeague().getDivision() > 1) {
+        if (targetTeam.getCurrentLeague().getDivision() > 1) {
             football.promoteTeam(targetTeam);
             leagues = football.getLeagues();
         } else {
@@ -106,5 +119,16 @@ public class LeagueBean {
         football.relegateTeam(targetTeam);
         leagues = football.getLeagues();
         return "showTeamToManage";
+    }
+
+    public String getStatistics() {
+        targetLeague = targetLeague.split(" - ")[1];
+        System.out.println("LeagueBean - getStatistics - targetLeague=" + targetLeague);
+        int[] stats = football.getLeagueStatistics(targetLeague);
+        if(stats[4] == 1) {
+            setStats(stats);
+            return "leagueStats";
+        }
+        return "selectLeague";
     }
 }

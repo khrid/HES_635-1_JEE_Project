@@ -26,7 +26,7 @@ public class Team {
     private Trainer trainer;
 
     @OneToMany(mappedBy = "currentTeam", cascade = CascadeType.MERGE )
-    private List<Person> contingent;
+    private List<Player> contingent;
 
     @OneToMany(mappedBy = "oldTeam", cascade = CascadeType.MERGE )
     private List<Transfer> freedPlayerTransfers;
@@ -75,11 +75,11 @@ public class Team {
         return this.currentLeague.getCountry().getCode() + " division #" + this.currentLeague.getDivision();
     }
 
-    public List<Person> getContingent() {
+    public List<Player> getContingent() {
         return contingent;
     }
 
-    public void setContingent(List<Person> contingent) {
+    public void setContingent(List<Player> contingent) {
         this.contingent = contingent;
     }
 

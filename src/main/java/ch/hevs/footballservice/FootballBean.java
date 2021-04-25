@@ -98,7 +98,7 @@ public class FootballBean implements Football {
         String country = team.getCurrentLeague().getCountry().getName();
         int division = team.getCurrentLeague().getDivision();
 
-        Query query = em.createQuery("FROM League l WHERE l.country.name = '" + country + "' and l.division = "+(division + 1)+"");
+        Query query = em.createQuery("FROM League l WHERE l.country.name = '" + country + "' and l.division = " + (division + 1) + "");
 
         try {
             League newLeague = (League) query.getSingleResult();
@@ -113,7 +113,7 @@ public class FootballBean implements Football {
     }
 
     @Override
-    @TransactionAttribute(value=TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRED)
     public void transferPlayer(Player player, Team newTeam) {
         Transfer transfer = new Transfer(LocalDateTime.now(), player, player.getCurrentTeam(), newTeam);
         em.persist(transfer);
@@ -127,5 +127,34 @@ public class FootballBean implements Football {
         em.merge(player);
     }
 
+    @Override
+    public int[] getLeagueStatistics(String targetLeague) {
+        int[] stats = {0, 0, 0, 0, 0};
+        System.out.println("FootballBean - getLeagueTeams for " + targetLeague);
+        Query query = em.createQuery("SELECT team.contingent FROM League l, in(l.teams) team  WHERE l.name = '" + targetLeague + "'");
+        //Query query = em.createQuery("SELECT t.contingent FROM Team t WHERE t.currentLeague.name = '"+targetLeague+"'");
+        ArrayList<Player> playersInLeague = (ArrayList<Player>) query.getResultList();
+        if (playersInLeague.size() > 0) {
+            int totalPlayersInLeague = playersInLeague.size();
+            int[] totaux = {totalPlayersInLeague, 0, 0, 0};
+            for (Player p :
+                    playersInLeague) {
+                totaux[1] += p.getAge();
+                totaux[2] += p.getHeight();
+                totaux[3] += p.getWeight();
+            }
 
+            stats[0] = totaux[0];
+            stats[1] = totaux[1] / totalPlayersInLeague;
+            stats[2] = totaux[2] / totalPlayersInLeague;
+            stats[3] = totaux[3] / totalPlayersInLeague;
+            stats[4] = 1;
+
+            System.out.println(totalPlayersInLeague + " players in " + targetLeague);
+            System.out.println("Average age is " + stats[0] + "yo");
+            System.out.println("Average height is " + stats[1] + "cm");
+            System.out.println("Average weight is " + stats[2] + "kg");
+        }
+        return stats;
+    }
 }
