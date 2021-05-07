@@ -19,7 +19,8 @@ public class Team {
     @Column(name="yearOfCreation")
     private int yearOfCreation;
 
-    @ManyToOne @JoinColumn(name="fk_league")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="fk_league")
     private League currentLeague;
 
     @OneToOne @JoinColumn(name="fk_trainer")

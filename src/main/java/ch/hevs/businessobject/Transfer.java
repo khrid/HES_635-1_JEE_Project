@@ -15,13 +15,16 @@ public class Transfer {
     @Column(name="transfer_date", nullable = false)   // DATE is a reserved keyword
     private LocalDateTime date;
 
-    @ManyToOne @JoinColumn(name="fk_player", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="fk_player", nullable = false)
     private Player player;
 
-    @ManyToOne @JoinColumn(name="fk_old_team", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="fk_old_team", nullable = false)
     private Team oldTeam;
 
-    @ManyToOne @JoinColumn(name="fk_new_team", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="fk_new_team", nullable = false)
     private Team newTeam;
 
     public Transfer(){}

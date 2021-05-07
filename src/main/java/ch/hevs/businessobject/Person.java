@@ -15,18 +15,18 @@ public class Person {
     @Column(name="lastname", nullable = false)
     private String lastname;
 
-    @Column(name="firstname", nullable = false)
+    @Column(name="firstname")//, nullable = false)
     private String firstname;
 
     @Column(name="dateOfBirth")
     private LocalDate dateOfBirth;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="fk_team")
     private Team currentTeam;
 
     @Embedded
-    @Column(name="nationality", nullable = false)
+    @Column(name="nationality")//, nullable = false)
     private Country nationality;
 
 

@@ -17,6 +17,8 @@ public class PlayerBean {
     private List<String> playerNames;
     private String targetPlayer;
     private Player targetPlayerObject;
+    private Player newPlayer;
+    private Player playerToUpdate;
     private int number;
     private Football football;
 
@@ -33,6 +35,10 @@ public class PlayerBean {
             this.playerNames.add(p.getFirstname() + " " + p.getLastname());
         }
         targetPlayerObject = players.get(0);
+
+        playerToUpdate = players.get(1);
+
+        newPlayer = new Player();
     }
 
     public List<Player> getPlayers() {
@@ -68,6 +74,14 @@ public class PlayerBean {
         this.number = number;
     }
 
+    public Player getNewPlayer() { return newPlayer; }
+
+    public void setNewPlayer(Player newPlayer) { this.newPlayer = newPlayer; }
+
+    public Player getPlayerToUpdate() { return playerToUpdate; }
+
+    public void setPlayerToUpdate(Player playerToUpdate) { this.playerToUpdate = playerToUpdate; }
+
     public void updateTargetPlayer(ValueChangeEvent event) {
         System.out.println("PlayerBean - updateTargetPlayer");
         targetPlayer = (String) event.getNewValue();
@@ -88,4 +102,13 @@ public class PlayerBean {
         }
         football.updateNumber(targetPlayerObject, number);
     }
+
+    public void createNewPlayer() {
+        football.createNewPlayer(newPlayer);
+    }
+
+    public void updatePlayerInfo(){
+        football.updatePlayerInfo(playerToUpdate);
+    }
+
 }

@@ -157,4 +157,27 @@ public class FootballBean implements Football {
         }
         return stats;
     }
+
+    @Override
+    public void createNewPlayer(Player player) {
+        /*
+        Country france = new Country("France", "FR");
+
+        Query query = em.createQuery("FROM Team t WHERE t.name = 'FC Bure'");
+        Team team = (Team) query.getSingleResult();
+
+        player.setNationality(france);
+        player.setCurrentTeam(team);
+        */
+
+        em.merge(player); // problème de persistance à corriger
+
+
+    }
+
+    @Override
+    public void updatePlayerInfo(Player player){
+        em.merge(player);
+    }
+
 }

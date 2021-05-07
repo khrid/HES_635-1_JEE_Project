@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+   <ui:define name="content">
+      <h2>Change a player's information</h2>
+      <h:form>
+         <h:outputText value="Lastname:"/>
+         <h:inputText value="#{playerBean.playerToUpdate.lastname}" />
+         <br/>
+         <h:outputText value="Firstname:"/>
+         <h:inputText value="#{playerBean.playerToUpdate.firstname}" />
+         <br/>
+         <h:outputText value="Date of birth:"/>
+         <h:inputText value="#{playerBean.playerToUpdate.dateOfBirth}" />
+         <br/>
+         <h:commandButton value="update" action="#{playerBean.updatePlayerInfo}"/>
+      </h:form>
+   </ui:define>
+</ui:composition>
+</html>

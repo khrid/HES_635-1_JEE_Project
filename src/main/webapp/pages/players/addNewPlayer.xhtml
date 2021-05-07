@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+   <ui:define name="content">
+      <h2>Add a new player</h2>
+      <h:form>
+         <h:outputText value="Lastname:"/>
+         <h:inputText value="#{playerBean.newPlayer.lastname}" />
+         <br/>
+         <h:outputText value="Firstname:"/>
+         <h:inputText value="#{playerBean.newPlayer.firstname}" />
+         <br/>
+
+
+         <h:outputText value="Position:"/>
+         <h:inputText value="#{playerBean.newPlayer.position}" />
+         <br/>
+         <h:outputText value="Number:"/>
+         <h:inputText value="#{playerBean.newPlayer.number}" />
+         <br/>
+         <h:outputText value="Height:"/>
+         <h:inputText value="#{playerBean.newPlayer.height}" />
+         <br/>
+         <h:outputText value="Weight:"/>
+         <h:inputText value="#{playerBean.newPlayer.weight}" />
+         <br/>
+         <h:commandButton value="Create" action="#{playerBean.createNewPlayer}"/>
+      </h:form>
+   </ui:define>
+</ui:composition>
+</html>

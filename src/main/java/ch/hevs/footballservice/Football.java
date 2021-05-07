@@ -21,4 +21,6 @@ public interface Football {
     void transferPlayer(Player player, Team newTeam);
     void updateNumber(Player player, int newNumber);
     int[] getLeagueStatistics(String targetLeague);
+    void createNewPlayer(Player player);
+    void updatePlayerInfo(Player player);
 }
