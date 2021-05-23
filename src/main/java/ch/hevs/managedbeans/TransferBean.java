@@ -161,6 +161,7 @@ public class TransferBean {
             System.out.println("TransferBean - transferPlayer - new and old team are the same");
         }else {
             football.transferPlayer(targetPlayerObject, targetTeam);
+            transfers = football.getTransfers();
         }
     }
 

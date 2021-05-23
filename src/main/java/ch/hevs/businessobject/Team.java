@@ -26,7 +26,7 @@ public class Team {
     @OneToOne @JoinColumn(name="fk_trainer")
     private Trainer trainer;
 
-    @OneToMany(mappedBy = "currentTeam", cascade = CascadeType.MERGE )
+    @OneToMany(mappedBy = "currentTeam", cascade = CascadeType.MERGE )    // A été modifié par Sylvain pour que les transferts fonctionnent
     private List<Player> contingent;
 
     @OneToMany(mappedBy = "oldTeam", cascade = CascadeType.MERGE )

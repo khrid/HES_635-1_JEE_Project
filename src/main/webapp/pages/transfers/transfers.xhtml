@@ -25,7 +25,9 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Date</f:facet>
-                    #{transfer.date}
+                    <h:outputText value="#{transfer.date}" >
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                    </h:outputText>
                 </h:column>
             </h:dataTable>
         </h:form>

@@ -16,8 +16,11 @@
          <h:outputText value="Firstname:"/>
          <h:inputText value="#{playerBean.playerToUpdate.firstname}" />
          <br/>
+         <h:outputText value="Position:"/>
+         <h:inputText value="#{playerBean.playerToUpdate.position}" />
+         <!--<br/>
          <h:outputText value="Date of birth:"/>
-         <h:inputText value="#{playerBean.playerToUpdate.dateOfBirth}" />
+         <h:inputText value="#{playerBean.playerToUpdate.dateOfBirth}" />-->
          <br/>
          <h:commandButton value="update" action="#{playerBean.updatePlayerInfo}"/>
       </h:form>

@@ -29,14 +29,7 @@ public class PlayerBean {
         InitialContext ctx = new InitialContext();
         football = (Football) ctx.lookup("java:global/HES_635-1_JEE_Project-1.0-SNAPSHOT/FootballBean!ch.hevs.footballservice.Football");
 
-        players = football.getPlayers();
-        this.playerNames = new ArrayList<>();
-        for (Player p : players) {
-            this.playerNames.add(p.getFirstname() + " " + p.getLastname());
-        }
-        targetPlayerObject = players.get(0);
-
-        playerToUpdate = players.get(1);
+        refreshPlayersList();
 
         newPlayer = new Player();
     }
@@ -109,6 +102,18 @@ public class PlayerBean {
 
     public void updatePlayerInfo(){
         football.updatePlayerInfo(playerToUpdate);
+    }
+
+    public void refreshPlayersList(){
+        players=football.getPlayers();
+        players = football.getPlayers();
+        this.playerNames = new ArrayList<>();
+        for (Player p : players) {
+            this.playerNames.add(p.getFirstname() + " " + p.getLastname());
+        }
+        targetPlayerObject = players.get(0);
+
+        playerToUpdate = players.get(1); // TODO à changer pour prendre utilisateur connecté par wildfly
     }
 
 }

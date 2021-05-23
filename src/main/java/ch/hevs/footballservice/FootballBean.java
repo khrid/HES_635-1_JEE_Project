@@ -170,7 +170,7 @@ public class FootballBean implements Football {
         player.setCurrentTeam(team);
         */
 
-        em.merge(player); // problème de persistance à corriger
+        em.persist(player); // problème de persistance à corriger
 
 
     }

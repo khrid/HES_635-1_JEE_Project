@@ -15,15 +15,15 @@ public class Transfer {
     @Column(name="transfer_date", nullable = false)   // DATE is a reserved keyword
     private LocalDateTime date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name="fk_player", nullable = false)
     private Player player;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name="fk_old_team", nullable = false)
     private Team oldTeam;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name="fk_new_team", nullable = false)
     private Team newTeam;
 
@@ -45,9 +45,7 @@ public class Transfer {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
+    public Date getDate() { return java.sql.Timestamp.valueOf(date); }
 
     public void setDate(LocalDateTime date) {
         this.date = date;
