@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+   <ui:define name="content">
+      <h2>Manage team -  #{mainBean.targetTeam.name}</h2>
+      <h:form>
+         <h:dataTable value="#{mainBean.messages}" var="message">
+            <h:column>
+               <h:outputText value="#{message}" style="color: green"/>
+            </h:column>
+         </h:dataTable>
+         <br/>
+         <h:commandButton value="Back to the team" action="#{mainBean.promotionRelegationDone}"/>
+      </h:form>
+   </ui:define>
+</ui:composition>
+</html>

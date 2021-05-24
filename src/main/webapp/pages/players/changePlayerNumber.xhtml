@@ -15,8 +15,9 @@
                           onchange="submit()">
             <f:selectItems value="#{mainBean.playerNames}"/>
          </h:selectOneMenu>
-         <h:outputText value="number:"/>
-         <h:inputText value="#{mainBean.number}" maxlength="2" style="width: 40px;"/>
+         <br/>
+         <h:outputText value="New number : "/>
+         <h:inputText value="#{mainBean.targetPlayerObject.number}"/>
          <h:commandButton value="update" action="#{mainBean.updateNumber}"/>
       </h:form>
       <br/>

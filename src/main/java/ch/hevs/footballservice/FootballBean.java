@@ -93,7 +93,7 @@ public class FootballBean implements Football {
     }
 
     @Override
-    public void relegateTeam(Team team) {
+    public boolean relegateTeam(Team team) {
         System.out.println("FootballBean - relegateTeam");
         String country = team.getCurrentLeague().getCountry().getName();
         int division = team.getCurrentLeague().getDivision();
@@ -107,8 +107,10 @@ public class FootballBean implements Football {
             System.out.println(newLeague);
             em.persist(newLeague);
             em.merge(team);
+            return true;
         } catch (NoResultException nre) {
             System.out.println("FootballBean - relegateTeam - No league under current league.");
+            return false;
         }
     }
 
@@ -118,12 +120,6 @@ public class FootballBean implements Football {
         Transfer transfer = new Transfer(LocalDateTime.now(), player, player.getCurrentTeam(), newTeam);
         em.persist(transfer);
         player.setCurrentTeam(newTeam);
-        em.merge(player);
-    }
-
-    @Override
-    public void updateNumber(Player player, int newNumber) {
-        player.setNumber(newNumber);
         em.merge(player);
     }
 
@@ -159,10 +155,12 @@ public class FootballBean implements Football {
     }
 
     @Override
-    public void createNewPlayer(Player player) {
-        //em.merge(player.getCurrentTeam());
+    public void createNewPlayer(Player player, Team team) {
+        Query query = em.createQuery("FROM Team t WHERE t.id =" + team.getId());
+        Team t = (Team) query.getSingleResult();
+        t.addPlayer(player);
         em.persist(player);
-
+        em.merge(t);
     }
 
     @Override

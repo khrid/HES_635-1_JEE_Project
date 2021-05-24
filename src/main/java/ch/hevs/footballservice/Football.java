@@ -16,11 +16,10 @@ public interface Football {
     Team getTeamByName(String targetTeamName);
 
     void promoteTeam(Team team);
-    void relegateTeam(Team team);
+    boolean relegateTeam(Team team);
 
     void transferPlayer(Player player, Team newTeam);
-    void updateNumber(Player player, int newNumber);
     int[] getLeagueStatistics(String targetLeague);
-    void createNewPlayer(Player player);
+    void createNewPlayer(Player player, Team team);
     void updatePlayerInfo(Player player);
 }

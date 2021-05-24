@@ -32,7 +32,7 @@ public class MainBean {
     private Player targetPlayerObject;
     private Player newPlayer;
     private Player playerToUpdate;
-    private int number;
+    private int currentNumber;
 
     // TeamBean
     private List<Team> teams;
@@ -159,19 +159,34 @@ public class MainBean {
     }
 
     public String promoteTeam() {
+        reset();
         if (targetTeam.getCurrentLeague().getDivision() > 1) {
             football.promoteTeam(targetTeam);
             leagues = football.getLeagues();
+            messages.add(targetTeam.getName() + " successfully promoted");
+            return "promotionRelegationSuccess.xhtml";
         } else {
             System.out.println("manageTeam - Can't promote when already in 1st division.");
+            messages.add("Oups, can't promote team because it is already in highest division");
+            return "showTeamToManage.xhtml";
         }
-        return "showTeamToManage";
     }
 
     public String relegateTeam() {
-        football.relegateTeam(targetTeam);
-        leagues = football.getLeagues();
-        return "showTeamToManage";
+        reset();
+        if(football.relegateTeam(targetTeam)){
+            leagues = football.getLeagues();
+            messages.add(targetTeam.getName() + " successfully relegated");
+            return "promotionRelegationSuccess.xhtml";
+        }else{
+            messages.add("Oups, can't relegate team because it is already in lowest division");
+            return "showTeamToManage.xhtml";
+        }
+    }
+
+    public String promotionRelegationDone(){
+        reset();
+        return "showTeamToManage.xhtml";
     }
 
     public String getStatistics() {
@@ -213,14 +228,6 @@ public class MainBean {
         return playerNames;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public Player getNewPlayer() { return newPlayer; }
 
     public void setNewPlayer(Player newPlayer) { this.newPlayer = newPlayer; }
@@ -237,22 +244,26 @@ public class MainBean {
                 players) {
             if((p.getFirstname() + " " + p.getLastname()).equals(targetPlayer)) {
                 targetPlayerObject = p;
-                number = targetPlayerObject.getNumber();
+                currentNumber = targetPlayerObject.getNumber();
                 System.out.println("updateTargetPlayer - player updated to "+targetPlayerObject.getLastname());
             }
         }
     }
 
     public String updateNumber() {
-        if(targetPlayerObject.getNumber() == number) {
+        reset();
+        if(targetPlayerObject.getNumber() == currentNumber) {
             System.out.println("updateNumber - new and old number are the same");
-            messages.add("Oups, " + targetPlayer + " shirt number is already #" + number);
-            return "";
-        }else{
-            football.updateNumber(targetPlayerObject, number);
-            messages.add(targetPlayer + " shirt number successfully updated to #" + number);
+            messages.add("Oups, " + targetPlayer + " number is already #" + currentNumber);
+        }else if(targetPlayerObject.getNumber() < 1 || targetPlayerObject.getNumber() > 99){
+            messages.add("Oups, number must be between 1 and 99");
+        }
+        else{
+            football.updatePlayerInfo(targetPlayerObject);
+            messages.add(targetPlayer + " number successfully updated to #" + targetPlayerObject.getNumber());
             return "changePlayerNumberSuccess.xhtml";
         }
+        return "";
     }
 
     public String makeNewNumberUpdate(){
@@ -268,32 +279,43 @@ public class MainBean {
         Country c = new Country("Switzerland", "CH");
         newPlayer.setNationality(c);
 
-        if(newPlayer.getLastname().equals("")){
-            messages.add("Lastname is empty");
+        if(newPlayer.getLastname().length() < 1 || newPlayer.getLastname().length() > 40){
+            messages.add("Lastname must be between 1 and 40 characters");
             isValid = false;
         }
-        if(newPlayer.getFirstname().equals("")){
-            messages.add("Firstname is empty");
+        if(newPlayer.getFirstname().length() < 1 || newPlayer.getFirstname().length() > 40){
+            messages.add("Firstname must be between 1 and 40 characters");
             isValid = false;
         }
-        if(newPlayer.getPosition().equals("")){
-            messages.add("Position is empty");
+        if(newPlayer.getPosition().length() < 1 || newPlayer.getPosition().length() > 40){
+            messages.add("Position must be between 1 and 40 characters");
             isValid = false;
         }
         if(targetTeam == null){
             messages.add("No team selected");
             isValid = false;
         }
-        // TODO Gérer erreurs numéro, taille, poids
+        if(newPlayer.getNumber() < 1 || newPlayer.getNumber() > 99){
+            messages.add("Number must be between 1 and 99");
+            isValid = false;
+        }
+        if(newPlayer.getHeight() < 100 || newPlayer.getHeight() > 250){
+            messages.add("Height must be between 100 and 250 (in cm)");
+            isValid = false;
+        }
+        if(newPlayer.getWeight() < 30 || newPlayer.getWeight() > 200){
+            messages.add("Weight must be between 30 and 200 (in kg)");
+            isValid = false;
+        }
 
         if(!isValid){
-            messages.add(0,"Following errors occured :");
+            messages.add(0,"Oups, following errors occured :");
             return "";
         }else{
             //newPlayer.setCurrentTeam(targetTeam); // TODO Régler problème de persistance quand on donne l'équipe
-            football.createNewPlayer(newPlayer);
+            football.createNewPlayer(newPlayer, targetTeam);
             refreshPlayersList();
-            messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully created");
+            messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully registred");
             return "addNewPlayerSuccess.xhtml";
         }
     }
@@ -305,6 +327,8 @@ public class MainBean {
     }
 
     public String updatePlayerInfo(){
+        reset();
+
         // TODO voir si on gère la détection de modification ou non (actuellement on update même si aucun changement)
         football.updatePlayerInfo(playerToUpdate);
         messages.add(playerToUpdate.getFirstname() + " " + playerToUpdate.getLastname() + " successfully updated");
@@ -368,6 +392,7 @@ public class MainBean {
     }
 
     public String transferPlayer(){
+        reset();
         if(targetPlayerObject.getCurrentTeam().getId() == targetTeam.getId()) {
             System.out.println("transferPlayer - new and old team are the same");
             messages.add("Oups, " + targetPlayer + " already plays for " + targetTeamName);

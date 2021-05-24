@@ -15,14 +15,20 @@
             </h:commandLink>
         </h:form>
         <hr/>
-
-
         <b>Stadium : </b> #{mainBean.targetTeam.stadium}<br/>
-        <h:form><b>Division : </b> #{mainBean.targetTeam.currentLeague.name}
-            <h:commandButton value="Promote" action="#{mainBean.promoteTeam}"/> - <h:commandButton value="Relegate"
-                                                                                                     action="#{mainBean.relegateTeam}"/></h:form>
-            <b>Trainer : </b> #{mainBean.targetTeam.trainer.lastname} #{mainBean.targetTeam.trainer.firstname}<br/>
-
+        <h:form>
+            <b>Division : </b> #{mainBean.targetTeam.currentLeague.name}
+            <h:commandButton value="Promote" action="#{mainBean.promoteTeam}"/> - <h:commandButton value="Relegate" action="#{mainBean.relegateTeam}"/>
+        </h:form>
+            <b>Trainer : </b>#{mainBean.targetTeam.trainer.lastname} #{mainBean.targetTeam.trainer.firstname}
+        <br/>
+        <h:form>
+            <h:dataTable value="#{mainBean.messages}" var="message">
+                <h:column>
+                    <h:outputText value="#{message}" style="color: red"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
     </ui:define>
 </ui:composition>
 </html>
