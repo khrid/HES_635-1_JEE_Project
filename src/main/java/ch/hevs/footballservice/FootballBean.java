@@ -31,15 +31,6 @@ public class FootballBean implements Football {
     }
 
     @Override
-    public List<Team> getTeams() {
-        Query query = em.createQuery("FROM Team t order by name");
-
-        System.out.println("FootballBean - getTeams");
-
-        return (ArrayList<Team>) query.getResultList();
-    }
-
-    @Override
     public List<Player> getPlayers() {
         System.out.println("FootballBean - getPlayers");
         Query query = em.createQuery("FROM Player p order by lastname, firstname");
@@ -68,7 +59,7 @@ public class FootballBean implements Football {
     @Override
     public List<Team> getLeagueTeams(String targetLeague) {
         System.out.println("FootballBean - getLeagueTeams for " + targetLeague);
-        Query query = em.createQuery("SELECT teams FROM League l WHERE l.name = '" + targetLeague + "'");
+        Query query = em.createQuery("SELECT teams FROM League l WHERE l.name = '" + targetLeague + "' order by name");
         return (List<Team>) query.getResultList();
     }
 

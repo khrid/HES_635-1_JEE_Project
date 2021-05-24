@@ -10,7 +10,14 @@
     <ui:define name="content">
         <h2>Teams</h2>
         <h:form>
-            <h:dataTable value="#{mainBean.teams}" var="team">
+            <h:outputText value="Select the league : "/>
+            <h:selectOneMenu value="#{mainBean.targetLeague}" valueChangeListener="#{mainBean.updateTargetLeague}"
+                             onchange="submit()">
+                <f:selectItems value="#{mainBean.leagueNames}"/>
+            </h:selectOneMenu>
+            <br/>
+            <br/>
+            <h:dataTable value="#{mainBean.targetLeagueTeams}" var="team">
                 <h:column>
                     <f:facet name="header">Team name</f:facet>
                     #{team.name}
@@ -24,9 +31,14 @@
                     #{team.stadium}
                 </h:column>
                 <h:column>
+                    <f:facet name="header">Contingent</f:facet>
+                    #{team.contingent.size()} players
+                </h:column>
+                <!--
+                <h:column>
                     <f:facet name="header">Current league</f:facet>
                     #{team.currentLeague.name} (#{team.countryAndDivisionInfo})
-                </h:column>
+                </h:column>-->
             </h:dataTable>
         </h:form>
     </ui:define>

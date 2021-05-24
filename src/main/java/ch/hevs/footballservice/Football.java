@@ -8,7 +8,6 @@ import java.util.List;
 @Local
 public interface Football {
     List<League> getLeagues();
-    List<Team> getTeams();
     List<Player> getPlayers();
     List<Trainer> getTrainers();
     List<Transfer> getTransfers();

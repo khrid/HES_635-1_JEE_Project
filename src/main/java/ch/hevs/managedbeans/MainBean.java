@@ -34,10 +34,6 @@ public class MainBean {
     private Player playerToUpdate;
     private int currentNumber;
 
-    // TeamBean
-    private List<Team> teams;
-    private List<String> teamNames = new ArrayList<>();
-
     // TrainerBean
     private List<Trainer> trainers;
 
@@ -62,19 +58,13 @@ public class MainBean {
             leagueNames.add(l.getCountry().getCode() + " - " + l.getName());
         }
         Collections.sort(leagueNames);
+        targetLeague = leagueNames.get(0);
+        refreshLeagueTeams();
 
 
         // PlayerBean
         refreshPlayersList();
         newPlayer = new Player();
-
-
-        // TeamBean
-        teams = football.getTeams();
-        for (Team t :
-                teams) {
-            teamNames.add(t.getName());
-        }
 
 
         // TrainerBean
@@ -84,6 +74,10 @@ public class MainBean {
         // TransferBean
         transfers = football.getTransfers();
         messages = new ArrayList<>();
+    }
+
+    private void refreshLeagueTeams() {
+        updateLeagueTeams(targetLeague);
     }
 
     public void reset(){
@@ -143,7 +137,11 @@ public class MainBean {
 
     public void updateTargetLeague(ValueChangeEvent event) {
         System.out.println("updateTargetLeague");
-        targetLeague = ((String) event.getNewValue()).split(" - ")[1];
+        updateLeagueTeams(((String) event.getNewValue()));
+    }
+
+    private void updateLeagueTeams(String leagueName) {
+        targetLeague = leagueName.split(" - ")[1];
         leagues = football.getLeagues();
         targetLeagueTeams = football.getLeagueTeams(this.targetLeague);
         this.targetLeagueTeamsNames = new ArrayList<>();
@@ -315,6 +313,7 @@ public class MainBean {
             //newPlayer.setCurrentTeam(targetTeam); // TODO Régler problème de persistance quand on donne l'équipe
             football.createNewPlayer(newPlayer, targetTeam);
             refreshPlayersList();
+            refreshLeagueTeams();
             messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully registred");
             return "addNewPlayerSuccess.xhtml";
         }
@@ -354,15 +353,6 @@ public class MainBean {
 
     // TeamBean
 
-    public List<Team> getTeams() {
-        System.out.println("getTeams");
-        return teams;
-    }
-
-    public List<String> getTeamNames() {
-        return teamNames;
-    }
-
     public void updateTargetTeam(ValueChangeEvent event) {
         System.out.println("updateTargetTeam");
         targetTeamName = (String) event.getNewValue();
@@ -400,6 +390,7 @@ public class MainBean {
         }else {
             football.transferPlayer(targetPlayerObject, targetTeam);
             transfers = football.getTransfers();
+            refreshLeagueTeams();
             messages.add(targetPlayer + " successfully transfered to " + targetTeamName);
             return "transferPlayerSuccess.xhtml";
         }

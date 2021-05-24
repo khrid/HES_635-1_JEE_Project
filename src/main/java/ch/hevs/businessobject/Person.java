@@ -92,13 +92,19 @@ public class Person {
     public int getAge() {
         Calendar now = Calendar.getInstance();
         Calendar birth = Calendar.getInstance();
-        birth.set(dateOfBirth.getYear(), dateOfBirth.getMonthValue()-1, dateOfBirth.getDayOfMonth());
-        int diff = now.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
-        if (birth.get(Calendar.MONTH) > now.get(Calendar.MONTH) ||
-                (birth.get(Calendar.MONTH) == now.get(Calendar.MONTH) && birth.get(Calendar.DATE) > now.get(Calendar.DATE))) {
-            diff--;
+        // TODO à retirer après avoir rendu la date de naissance obligatoire
+        if(dateOfBirth != null){
+            birth.set(dateOfBirth.getYear(), dateOfBirth.getMonthValue()-1, dateOfBirth.getDayOfMonth());
+            int diff = now.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+            if (birth.get(Calendar.MONTH) > now.get(Calendar.MONTH) ||
+                    (birth.get(Calendar.MONTH) == now.get(Calendar.MONTH) && birth.get(Calendar.DATE) > now.get(Calendar.DATE))) {
+                diff--;
+            }
+            return diff;
+        }else{
+            return 0;
         }
-        return diff;
+
     }
 
 }

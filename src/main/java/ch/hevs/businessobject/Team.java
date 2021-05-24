@@ -27,7 +27,7 @@ public class Team {
     @JoinColumn(name="fk_trainer")
     private Trainer trainer;
 
-    @OneToMany(mappedBy = "currentTeam", cascade = CascadeType.ALL )
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "currentTeam", cascade = CascadeType.ALL )
     private List<Player> contingent;
 
     @OneToMany(mappedBy = "oldTeam", cascade = CascadeType.ALL )
