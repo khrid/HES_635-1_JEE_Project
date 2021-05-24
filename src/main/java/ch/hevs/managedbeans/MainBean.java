@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.event.ValueChangeEvent;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -64,7 +65,7 @@ public class MainBean {
 
         // PlayerBean
         refreshPlayersList();
-        newPlayer = new Player();
+        initializeNewPlayer();
 
 
         // TrainerBean
@@ -74,6 +75,11 @@ public class MainBean {
         // TransferBean
         transfers = football.getTransfers();
         messages = new ArrayList<>();
+    }
+
+    private void initializeNewPlayer() {
+        newPlayer = new Player();
+        newPlayer.setDateOfBirth("2000-01-01");
     }
 
     private void refreshLeagueTeams() {
@@ -304,13 +310,23 @@ public class MainBean {
         if(newPlayer.getWeight() < 30 || newPlayer.getWeight() > 200){
             messages.add("Weight must be between 30 and 200 (in kg)");
             isValid = false;
+        } // TODO Gérer ça différemment car exception qui se produit avant d'arriver ici
+        if(Integer.parseInt(newPlayer.getDateOfBirth().split("-")[0]) < 1900 ||
+                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[0]) > LocalDate.now().getYear() ||
+                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[1]) < 1 ||
+                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[1]) > 12 ||
+                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[2]) < 1 ||
+                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[2]) > 31
+        ){
+            messages.add("Invalid date format (pattern is yyyy-mm-dd");
+            isValid = false;
         }
+
 
         if(!isValid){
             messages.add(0,"Oups, following errors occured :");
             return "";
         }else{
-            //newPlayer.setCurrentTeam(targetTeam); // TODO Régler problème de persistance quand on donne l'équipe
             football.createNewPlayer(newPlayer, targetTeam);
             refreshPlayersList();
             refreshLeagueTeams();
@@ -321,7 +337,7 @@ public class MainBean {
 
     public String makeNewPlayerInsertion(){
         reset();
-        newPlayer = new Player();
+        initializeNewPlayer();
         return "addNewPlayer.xhtml";
     }
 

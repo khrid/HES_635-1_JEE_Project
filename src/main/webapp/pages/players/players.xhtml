@@ -24,11 +24,15 @@
                     #{player.nationality.name}
                 </h:column>
                 <h:column>
+                    <f:facet name="header">Date of birth</f:facet>
+                    #{player.dateOfBirth}
+                </h:column>
+                <h:column>
                     <f:facet name="header">Team</f:facet>
                     #{player.currentTeam.name}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Role</f:facet>
+                    <f:facet name="header">Position</f:facet>
                     #{player.position}
                 </h:column>
             </h:dataTable>

@@ -2,6 +2,8 @@ package ch.hevs.businessobject;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,6 +31,7 @@ public class Person {
     @Column(name="nationality")//, nullable = false)
     private Country nationality;
 
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Person(){}
 
@@ -65,12 +68,16 @@ public class Person {
         this.firstname = firstname;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+    public String getDateOfBirth() {
+        if(dateOfBirth == null){
+            return "";
+        }else{
+            return dateOfBirth.format(formatter);
+        }
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = LocalDate.parse(dateOfBirth, formatter);
     }
 
     public Team getCurrentTeam() {
