@@ -17,7 +17,8 @@
             </h:selectOneMenu>
             <br/>
             <h:outputText value="Team : "/>
-            <h:selectOneMenu value="#{mainBean.targetTeamName}">
+            <h:selectOneMenu value="#{mainBean.targetTeamName}" valueChangeListener="#{mainBean.updateTargetTeam}"
+                             onchange="submit()">
                 <f:selectItems value="#{mainBean.targetLeagueTeamsNames}"/>
             </h:selectOneMenu>
             <h:commandButton value="manage" action="#{mainBean.manageTeam}"/>

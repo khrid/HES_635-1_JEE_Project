@@ -36,24 +36,12 @@ public class MainBean {
     // TeamBean
     private List<Team> teams;
     private List<String> teamNames = new ArrayList<>();
-    private Team teamToManage;
 
     // TrainerBean
     private List<Trainer> trainers;
 
     // TransferBean
     private List<Transfer> transfers;
-    private List<Player> players2; // TODO à fusionner avec autre variable
-    private List<String> playerNames2; // TODO à fusionner avec autre variable
-    private String targetPlayer2; // TODO à fusionner avec autre variable
-    private Player targetPlayerObject2; // TODO à fusionner avec autre variable
-    private String targetLeague2; // TODO à fusionner avec autre variable
-    private List<String> leagueNames2; // TODO à fusionner avec autre variable
-    private List<League> leagues2; // TODO à fusionner avec autre variable
-    private Team targetTeam2; // TODO à fusionner avec autre variable
-    private String targetTeamName2; // TODO à fusionner avec autre variable
-    private List<Team> targetLeagueTeams2; // TODO à fusionner avec autre variable
-    private List<String> targetLeagueTeamsNames2; // TODO à fusionner avec autre variable
     private String message;
 
     @PostConstruct
@@ -95,22 +83,6 @@ public class MainBean {
 
         // TransferBean
         transfers = football.getTransfers();
-
-        players2 = football.getPlayers();
-        this.playerNames2 = new ArrayList<>();
-        for (Player p : players2) {
-            this.playerNames2.add(p.getFirstname() + " " + p.getLastname());
-        }
-        targetPlayerObject2 = players2.get(0);
-
-        leagueNames2 = new ArrayList<>();
-        targetLeagueTeams2 = new ArrayList<>();
-        leagues2 = football.getLeagues();
-        for (League l :
-                leagues2) {
-            leagueNames2.add(l.getCountry().getCode() + " - " + l.getName());
-        }
-        Collections.sort(leagueNames2);
         message = "";
     }
 
@@ -298,21 +270,25 @@ public class MainBean {
         return teams;
     }
 
-    public Team getTeamToManage() {
-        return teamToManage;
-    }
-
     public List<String> getTeamNames() {
         return teamNames;
     }
 
-    public void updateTeamToManage(ValueChangeEvent event) {
-        teamToManage = (Team) event.getNewValue();
-        System.out.println(teamToManage);
+    public void updateTargetTeam(ValueChangeEvent event) {
+        System.out.println("updateTargetTeam");
+        targetTeamName = (String) event.getNewValue();
+        for (Team t :
+                targetLeagueTeams) {
+            if(t.getName().equals(targetTeamName)) {
+                targetTeam = t;
+                System.out.println("updateTargetTeam - team updated to "+ targetTeam.getName());
+            }
+        }
     }
 
 
     // TrainerBean
+
     public List<Trainer> getTrainers() {
         System.out.println("getTrainers");
         return trainers;
@@ -320,119 +296,25 @@ public class MainBean {
 
 
     // TransferBean
-    public List<Player> getPlayers2() {
-        System.out.println("getPlayers");
-        return players2;
-    }
-
-    public String getTargetPlayer2() {
-        return targetPlayer2;
-    }
-
-    public void setTargetPlayer2(String targetPlayer2) {
-        this.targetPlayer2 = targetPlayer2;
-    }
-
-    public Player getTargetPlayerObject2() {
-        return targetPlayerObject2;
-    }
-
-    public void setTargetPlayerObject2(Player targetPlayerObject2) {
-        this.targetPlayerObject2 = targetPlayerObject2;
-    }
-
-    public List<String> getPlayerNames2() {
-        return playerNames2;
-    }
-
-    public List<String> getLeagueNames2() {
-        return leagueNames2;
-    }
-    public List<String> getTargetLeagueTeamsNames2() {
-        return targetLeagueTeamsNames2;
-    }
-
-    public String getTargetLeague2() {
-        return targetLeague2;
-    }
-    public void setTargetLeague2(final String targetLeague2) {
-        this.targetLeague2 = targetLeague2;
-    }
-
-    public List<League> getLeagues2() {
-        System.out.println("TransferBean - getLeagues");
-        return leagues2;
-    }
-
-    public Team getTargetTeam2() {
-        return targetTeam2;
-    }
-
-    public String getTargetTeamName2() {
-        return targetTeamName2;
-    }
-    public void setTargetTeamName2(final String targetTeamName2) {
-        this.targetTeamName2 = targetTeamName2;
-    }
-
-    public List<Team> getTargetLeagueTeams2() {
-        return targetLeagueTeams2;
-    }
 
     public String getMessage(){
         return message;
     }
 
-    public void updateTargetPlayer2(ValueChangeEvent event) {
-        System.out.println("TransferBean - updateTargetPlayer");
-        targetPlayer2 = (String) event.getNewValue();
-        System.out.println(targetPlayer2);
-        for (Player p :
-                players2) {
-            if((p.getFirstname() + " " + p.getLastname()).equals(targetPlayer2)) {
-                targetPlayerObject2 = p;
-                System.out.println("TransferBean - updateTargetPlayer - player updated to "+ targetPlayerObject2.getLastname());
-            }
-        }
-    }
-
-    public void updateTargetLeague2(ValueChangeEvent event) {
-        System.out.println("TransferBean - updateTargetLeague");
-        targetLeague2 = ((String) event.getNewValue()).split(" - ")[1];
-        leagues2 = football.getLeagues();
-        targetLeagueTeams2 = football.getLeagueTeams(this.targetLeague2);
-        this.targetLeagueTeamsNames2 = new ArrayList<>();
-        for (Team t : targetLeagueTeams2) {
-            this.targetLeagueTeamsNames2.add(t.getName());
-        }
-    }
-
-    public void updateTargetTeam2(ValueChangeEvent event) {
-        System.out.println("TransferBean - updateTargetTeam");
-        targetTeamName2 = (String) event.getNewValue();
-        for (Team t :
-                targetLeagueTeams2) {
-            if(t.getName().equals(targetTeamName2)) {
-                targetTeam2 = t;
-                System.out.println("TransferBean - updateTargetTeam - team updated to "+ targetTeam2.getName());
-            }
-        }
-    }
-
     public List<Transfer> getTransfers() {
-        System.out.println("TransferBean - getTransfers");
+        System.out.println("getTransfers");
         return transfers;
     }
 
     public String transferPlayer(){
-        if(targetPlayerObject2.getCurrentTeam().getId() == targetTeam2.getId()) {
-            System.out.println("TransferBean - transferPlayer - new and old team are the same");
-            message = "Oups, " + targetPlayer2 + " already plays for " + targetTeamName2;
+        if(targetPlayerObject.getCurrentTeam().getId() == targetTeam.getId()) {
+            System.out.println("transferPlayer - new and old team are the same");
+            message = "Oups, " + targetPlayer + " already plays for " + targetTeamName;
             return "";
         }else {
-            football.transferPlayer(targetPlayerObject2, targetTeam2);
+            football.transferPlayer(targetPlayerObject, targetTeam);
             transfers = football.getTransfers();
-            message = targetPlayer2 + " successfully transfered to " + targetTeamName2;
+            message = targetPlayer + " successfully transfered to " + targetTeamName;
             return "transferPlayerSuccess.xhtml";
         }
     }
