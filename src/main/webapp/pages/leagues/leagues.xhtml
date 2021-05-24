@@ -8,13 +8,9 @@
 
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
     <ui:define name="content">
-        <!-- <h:outputLabel value="Get leagues:"></h:outputLabel><h:outputLabel value=" #{leagueBean.leagues}"></h:outputLabel> -->
-        <!-- l'appel est fait sur le getter
-               leagueBean.leagues =
-               leagueBean.getLeagues -->
         <h2>Leagues</h2>
         <h:form>
-            <h:dataTable value="#{leagueBean.leagues}" var="league">
+            <h:dataTable value="#{mainBean.leagues}" var="league">
                 <h:column>
                     <f:facet name="header">League name</f:facet>
                     #{league.name}

@@ -11,26 +11,26 @@
       <h2>Add a new player</h2>
       <h:form>
          <h:outputText value="Lastname:"/>
-         <h:inputText value="#{playerBean.newPlayer.lastname}" />
+         <h:inputText value="#{mainBean.newPlayer.lastname}" />
          <br/>
          <h:outputText value="Firstname:"/>
-         <h:inputText value="#{playerBean.newPlayer.firstname}" />
+         <h:inputText value="#{mainBean.newPlayer.firstname}" />
          <br/>
 
 
          <h:outputText value="Position:"/>
-         <h:inputText value="#{playerBean.newPlayer.position}" />
+         <h:inputText value="#{mainBean.newPlayer.position}" />
          <br/>
          <h:outputText value="Number:"/>
-         <h:inputText value="#{playerBean.newPlayer.number}" />
+         <h:inputText value="#{mainBean.newPlayer.number}" />
          <br/>
          <h:outputText value="Height:"/>
-         <h:inputText value="#{playerBean.newPlayer.height}" />
+         <h:inputText value="#{mainBean.newPlayer.height}" />
          <br/>
          <h:outputText value="Weight:"/>
-         <h:inputText value="#{playerBean.newPlayer.weight}" />
+         <h:inputText value="#{mainBean.newPlayer.weight}" />
          <br/>
-         <h:commandButton value="Create" action="#{playerBean.createNewPlayer}"/>
+         <h:commandButton value="Create" action="#{mainBean.createNewPlayer}"/>
       </h:form>
    </ui:define>
 </ui:composition>

@@ -8,7 +8,7 @@
 
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
     <ui:define name="content">
-        <h2>Manage team -  #{leagueBean.targetTeam.name}</h2>
+        <h2>Manage team -  #{mainBean.targetTeam.name}</h2>
         <h:form>
             <h:commandLink action="manageTeams">
                 <h:outputText value="Manage another team"/>
@@ -17,11 +17,11 @@
         <hr/>
 
 
-        <b>Stadium : </b> #{leagueBean.targetTeam.stadium}<br/>
-        <h:form><b>Division : </b> #{leagueBean.targetTeam.currentLeague.name}
-            <h:commandButton value="Promote" action="#{leagueBean.promoteTeam}"/> - <h:commandButton value="Relegate"
-                                                                                                     action="#{leagueBean.relegateTeam}"/></h:form>
-            <b>Trainer : </b> #{leagueBean.targetTeam.trainer.lastname} #{leagueBean.targetTeam.trainer.firstname}<br/>
+        <b>Stadium : </b> #{mainBean.targetTeam.stadium}<br/>
+        <h:form><b>Division : </b> #{mainBean.targetTeam.currentLeague.name}
+            <h:commandButton value="Promote" action="#{mainBean.promoteTeam}"/> - <h:commandButton value="Relegate"
+                                                                                                     action="#{mainBean.relegateTeam}"/></h:form>
+            <b>Trainer : </b> #{mainBean.targetTeam.trainer.lastname} #{mainBean.targetTeam.trainer.firstname}<br/>
 
     </ui:define>
 </ui:composition>

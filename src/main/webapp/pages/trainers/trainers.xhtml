@@ -10,7 +10,7 @@
     <ui:define name="content">
         <h2>Trainers</h2>
         <h:form>
-            <h:dataTable value="#{trainerBean.trainers}" var="trainer">
+            <h:dataTable value="#{mainBean.trainers}" var="trainer">
                 <h:column>
                     <f:facet name="header">Firstname</f:facet>
                     #{trainer.firstname}

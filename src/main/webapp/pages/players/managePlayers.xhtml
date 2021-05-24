@@ -11,16 +11,16 @@
         <h2>Manage teams</h2>
         <h:form>
             <h:outputText value="Select the team's league : "/>
-            <h:selectOneMenu value="#{leagueBean.targetLeague}" valueChangeListener="#{leagueBean.updateTargetLeague}"
+            <h:selectOneMenu value="#{mainBean.targetLeague}" valueChangeListener="#{mainBean.updateTargetLeague}"
                              onchange="submit()">
-                <f:selectItems value="#{leagueBean.leagueNames}"/>
+                <f:selectItems value="#{mainBean.leagueNames}"/>
             </h:selectOneMenu>
             <br/>
             <h:outputText value="Team : "/>
-            <h:selectOneMenu value="#{leagueBean.targetTeamName}">
-                <f:selectItems value="#{leagueBean.targetLeagueTeamsNames}"/>
+            <h:selectOneMenu value="#{mainBean.targetTeamName}">
+                <f:selectItems value="#{mainBean.targetLeagueTeamsNames}"/>
             </h:selectOneMenu>
-            <h:commandButton value="manage" action="#{leagueBean.manageTeam}"/>
+            <h:commandButton value="manage" action="#{mainBean.manageTeam}"/>
         </h:form>
     </ui:define>
 </ui:composition>

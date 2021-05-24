@@ -11,12 +11,12 @@
         <h2>League statistics</h2>
         <h:form>
             <h:outputText value="Select the league : "/>
-            <h:selectOneMenu value="#{leagueBean.targetLeague}" valueChangeListener="#{leagueBean.updateTargetLeague}"
+            <h:selectOneMenu value="#{mainBean.targetLeague}" valueChangeListener="#{mainBean.updateTargetLeague}"
                              onchange="submit()">
-                <f:selectItems value="#{leagueBean.leagueNames}"/>
+                <f:selectItems value="#{mainBean.leagueNames}"/>
             </h:selectOneMenu>
             <br/>
-            <h:commandButton value="getStats" action="#{leagueBean.getStatistics}"/>
+            <h:commandButton value="getStats" action="#{mainBean.getStatistics}"/>
 
         </h:form>
     </ui:define>

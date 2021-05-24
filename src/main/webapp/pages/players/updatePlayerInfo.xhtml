@@ -11,18 +11,18 @@
       <h2>Change a player's information</h2>
       <h:form>
          <h:outputText value="Lastname:"/>
-         <h:inputText value="#{playerBean.playerToUpdate.lastname}" />
+         <h:inputText value="#{mainBean.playerToUpdate.lastname}" />
          <br/>
          <h:outputText value="Firstname:"/>
-         <h:inputText value="#{playerBean.playerToUpdate.firstname}" />
+         <h:inputText value="#{mainBean.playerToUpdate.firstname}" />
          <br/>
          <h:outputText value="Position:"/>
-         <h:inputText value="#{playerBean.playerToUpdate.position}" />
+         <h:inputText value="#{mainBean.playerToUpdate.position}" />
          <!--<br/>
          <h:outputText value="Date of birth:"/>
-         <h:inputText value="#{playerBean.playerToUpdate.dateOfBirth}" />-->
+         <h:inputText value="#{mainBean.playerToUpdate.dateOfBirth}" />-->
          <br/>
-         <h:commandButton value="update" action="#{playerBean.updatePlayerInfo}"/>
+         <h:commandButton value="update" action="#{mainBean.updatePlayerInfo}"/>
       </h:form>
    </ui:define>
 </ui:composition>

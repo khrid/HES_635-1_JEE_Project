@@ -5,28 +5,8 @@
         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
         version="2.2">
     <managed-bean>
-        <managed-bean-name>leagueBean</managed-bean-name>
-        <managed-bean-class>ch.hevs.managedbeans.LeagueBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>teamBean</managed-bean-name>
-        <managed-bean-class>ch.hevs.managedbeans.TeamBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>playerBean</managed-bean-name>
-        <managed-bean-class>ch.hevs.managedbeans.PlayerBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>trainerBean</managed-bean-name>
-        <managed-bean-class>ch.hevs.managedbeans.TrainerBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>transferBean</managed-bean-name>
-        <managed-bean-class>ch.hevs.managedbeans.TransferBean</managed-bean-class>
+        <managed-bean-name>mainBean</managed-bean-name>
+        <managed-bean-class>ch.hevs.managedbeans.MainBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
@@ -34,7 +14,7 @@
         <display-name>manageTeams.xhtml</display-name>
         <from-view-id>/faces/pages/teams/manageTeams.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>#{leagueBean.manageTeam}</from-outcome>
+            <from-outcome>#{mainBean.manageTeam}</from-outcome>
             <to-view-id>/faces/pages/teams/showTeamToManage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
@@ -43,25 +23,9 @@
         <display-name>selectLeague.xhtml</display-name>
         <from-view-id>/faces/pages/leagues/selectLeague.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>#{leagueBean.getStatistics}</from-outcome>
+            <from-outcome>#{mainBean.getStatistics}</from-outcome>
             <to-view-id>/faces/pages/leagues/leagueStats.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-    <!--<navigation-rule>
-        <display-name>welcomeBank.xhtml</display-name>
-        <from-view-id>/_old/welcomeBank.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>transferForm</from-outcome>
-            <to-view-id>/_old/transferForm.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <display-name>transferForm.xhtml</display-name>
-        <from-view-id>/_old/transferForm.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>#{transferBean.performTransfer}</from-outcome>
-            <to-view-id>/_old/showTransferResult.xhtml</to-view-id>
-        </navigation-case>
-    </navigation-rule>-->
 
 </faces-config>

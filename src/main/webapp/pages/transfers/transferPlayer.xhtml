@@ -11,25 +11,29 @@
       <h2>Transfer a player</h2>
       <h:form>
          <h:outputText value="Select the player to transfer : "/>
-         <h:selectOneMenu value="#{transferBean.targetPlayer}" valueChangeListener="#{transferBean.updateTargetPlayer}"
+         <h:selectOneMenu value="#{mainBean.targetPlayer2}" valueChangeListener="#{mainBean.updateTargetPlayer2}"
                           onchange="submit()">
-            <f:selectItems value="#{transferBean.playerNames}"/>
+            <f:selectItems value="#{mainBean.playerNames2}"/>
          </h:selectOneMenu>
          <br/>
          <h:outputText value="Select the team's league : "/>
-         <h:selectOneMenu value="#{transferBean.targetLeague}" valueChangeListener="#{transferBean.updateTargetLeague}"
+         <h:selectOneMenu value="#{mainBean.targetLeague2}" valueChangeListener="#{mainBean.updateTargetLeague2}"
                           onchange="submit()">
-            <f:selectItems value="#{transferBean.leagueNames}"/>
+            <f:selectItems value="#{mainBean.leagueNames2}"/>
          </h:selectOneMenu>
          <br/>
          <h:outputText value="Team : "/>
-         <h:selectOneMenu value="#{transferBean.targetTeamName}" valueChangeListener="#{transferBean.updateTargetTeam}"
+         <h:selectOneMenu value="#{mainBean.targetTeamName2}" valueChangeListener="#{mainBean.updateTargetTeam2}"
                   onchange="submit()">
-            <f:selectItems value="#{transferBean.targetLeagueTeamsNames}"/>
+            <f:selectItems value="#{mainBean.targetLeagueTeamsNames2}"/>
          </h:selectOneMenu>
          <br/>
-         <h:commandButton value="transfer" action="#{transferBean.transferPlayer}"/>
+         <br/>
+         <h:commandButton value="Transfer" action="#{mainBean.transferPlayer}"/>
       </h:form>
+      <br/>
+      <br/>
+      <h:outputText value="#{mainBean.message}" style="color: red"/>
    </ui:define>
 </ui:composition>
 </html>

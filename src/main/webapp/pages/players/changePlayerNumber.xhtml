@@ -11,13 +11,13 @@
       <h2>Change a player's number</h2>
       <h:form>
          <h:outputText value="Select the player to change the number : "/>
-         <h:selectOneMenu value="#{playerBean.targetPlayer}" valueChangeListener="#{playerBean.updateTargetPlayer}"
+         <h:selectOneMenu value="#{mainBean.targetPlayer}" valueChangeListener="#{mainBean.updateTargetPlayer}"
                           onchange="submit()">
-            <f:selectItems value="#{playerBean.playerNames}"/>
+            <f:selectItems value="#{mainBean.playerNames}"/>
          </h:selectOneMenu>
          <h:outputText value="number:"/>
-         <h:inputText value="#{playerBean.number}" maxlength="2" style="width: 40px;"/>
-         <h:commandButton value="update" action="#{playerBean.updateNumber}"/>
+         <h:inputText value="#{mainBean.number}" maxlength="2" style="width: 40px;"/>
+         <h:commandButton value="update" action="#{mainBean.updateNumber}"/>
       </h:form>
    </ui:define>
 </ui:composition>
