@@ -16,8 +16,18 @@
          <h:outputText value="Firstname:"/>
          <h:inputText value="#{mainBean.newPlayer.firstname}" />
          <br/>
-
-
+         <h:outputText value="Select the team's league : "/>
+         <h:selectOneMenu value="#{mainBean.targetLeague}" valueChangeListener="#{mainBean.updateTargetLeague}"
+                          onchange="submit()">
+            <f:selectItems value="#{mainBean.leagueNames}"/>
+         </h:selectOneMenu>
+         <br/>
+         <h:outputText value="Team : "/>
+         <h:selectOneMenu value="#{mainBean.targetTeamName}" valueChangeListener="#{mainBean.updateTargetTeam}"
+                          onchange="submit()">
+            <f:selectItems value="#{mainBean.targetLeagueTeamsNames}"/>
+         </h:selectOneMenu>
+         <br/>
          <h:outputText value="Position:"/>
          <h:inputText value="#{mainBean.newPlayer.position}" />
          <br/>
@@ -30,7 +40,16 @@
          <h:outputText value="Weight:"/>
          <h:inputText value="#{mainBean.newPlayer.weight}" />
          <br/>
+         <br/>
          <h:commandButton value="Create" action="#{mainBean.createNewPlayer}"/>
+      </h:form>
+      <br/>
+      <h:form>
+         <h:dataTable value="#{mainBean.messages}" var="message">
+            <h:column>
+               <h:outputText value="#{message}" style="color: red"/>
+            </h:column>
+         </h:dataTable>
       </h:form>
    </ui:define>
 </ui:composition>

@@ -22,7 +22,16 @@
          <h:outputText value="Date of birth:"/>
          <h:inputText value="#{mainBean.playerToUpdate.dateOfBirth}" />-->
          <br/>
+         <br/>
          <h:commandButton value="update" action="#{mainBean.updatePlayerInfo}"/>
+      </h:form>
+      <br/>
+      <h:form>
+         <h:dataTable value="#{mainBean.messages}" var="message">
+            <h:column>
+               <h:outputText value="#{message}" style="color: red"/>
+            </h:column>
+         </h:dataTable>
       </h:form>
    </ui:define>
 </ui:composition>

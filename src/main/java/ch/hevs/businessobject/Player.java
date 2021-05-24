@@ -10,10 +10,10 @@ import java.util.List;
 @Entity
 public class Player extends Person {
 
-    @Column(name = "player_position")//, nullable = false), nullable = false) // POSITION is a reserved keyword
+    @Column(name = "player_position")//, nullable = false) // POSITION is a reserved keyword
     private String position;
 
-    @Column(name = "number")//, nullable = false), nullable = false)
+    @Column(name = "number")//, nullable = false)
     private int number;
 
     @Column(name = "height")

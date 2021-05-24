@@ -160,18 +160,8 @@ public class FootballBean implements Football {
 
     @Override
     public void createNewPlayer(Player player) {
-        /*
-        Country france = new Country("France", "FR");
-
-        Query query = em.createQuery("FROM Team t WHERE t.name = 'FC Bure'");
-        Team team = (Team) query.getSingleResult();
-
-        player.setNationality(france);
-        player.setCurrentTeam(team);
-        */
-
-        em.persist(player); // problème de persistance à corriger
-
+        //em.merge(player.getCurrentTeam());
+        em.persist(player);
 
     }
 

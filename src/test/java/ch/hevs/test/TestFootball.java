@@ -1,6 +1,7 @@
 package ch.hevs.test;
 
 import ch.hevs.businessobject.*;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
@@ -49,32 +50,153 @@ public class TestFootball {
             }
 
             // Test JQL, récupération d'une League
-            League superLeagueFromEm = (League) em.createQuery("from League where name = 'Super League'").getSingleResult();
+            League SuperLeague = (League) em.createQuery("from League where name = 'Super League'").getSingleResult();
+            League ChallengeLeague = (League) em.createQuery("from League where name = 'Challenge League'").getSingleResult();
+            League PremierLeague = (League) em.createQuery("from League where name = 'Premier League'").getSingleResult();
+            League Championship = (League) em.createQuery("from League where name = 'Championship'").getSingleResult();
+            League Bundesliga = (League) em.createQuery("from League where name = 'Bundesliga'").getSingleResult();
+            League Bundesliga2 = (League) em.createQuery("from League where name = 'Bundesliga 2'").getSingleResult();
+
 
             // Création d'une nouvelle Team avec la League
-            Team fcBure = new Team("FC Bure", "Stade Croix-de-Pierre", 1962, superLeagueFromEm);
+            PremierLeague.addTeam(new Team("Arsenal","Emirates Stadium",1900));
+            PremierLeague.addTeam(new Team("Aston Villa","myStadium",1900));
+            PremierLeague.addTeam(new Team("Brighton","myStadium",1900));
+            PremierLeague.addTeam(new Team("Burnley","myStadium",1900));
+            PremierLeague.addTeam(new Team("Chelsea","Stamford Bridge",1900));
+            PremierLeague.addTeam(new Team("Crystal Palace","myStadium",1900));
+            PremierLeague.addTeam(new Team("Everton","myStadium",1900));
+            PremierLeague.addTeam(new Team("Fulham","myStadium",1900));
+            PremierLeague.addTeam(new Team("Leeds","myStadium",1900));
+            PremierLeague.addTeam(new Team("Leicester","King Power Stadium",1900));
+            PremierLeague.addTeam(new Team("Liverpool","Anfield",1900));
+            PremierLeague.addTeam(new Team("Manchester City","Etihad Stadium",1900));
+            PremierLeague.addTeam(new Team("Manchester United","Old Trafford",1900));
+            PremierLeague.addTeam(new Team("Newcastle","myStadium",1900));
+            PremierLeague.addTeam(new Team("Sheffield","myStadium",1900));
+            PremierLeague.addTeam(new Team("Southampton","myStadium",1900));
+            PremierLeague.addTeam(new Team("Tottenham","White Hart Lane",1900));
+            PremierLeague.addTeam(new Team("West Bromwich","myStadium",1900));
+            PremierLeague.addTeam(new Team("West Ham","myStadium",1900));
+            PremierLeague.addTeam(new Team("Wolverhampton","myStadium",1900));
+            Championship.addTeam(new Team("Norwich","myStadium",1900));
+            Championship.addTeam(new Team("Watford","myStadium",1900));
+            Championship.addTeam(new Team("Brentford","myStadium",1900));
+            Championship.addTeam(new Team("Swansea","myStadium",1900));
+            Championship.addTeam(new Team("Barnsley","myStadium",1900));
+            Championship.addTeam(new Team("Bournemouth","myStadium",1900));
+            Championship.addTeam(new Team("Reading","myStadium",1900));
+            Championship.addTeam(new Team("Cardiff City","myStadium",1900));
+            Championship.addTeam(new Team("Queens Park Rangers","myStadium",1900));
+            Championship.addTeam(new Team("Middlesbrough","myStadium",1900));
+            Championship.addTeam(new Team("Millwall","myStadium",1900));
+            Championship.addTeam(new Team("Luton","myStadium",1900));
+            Championship.addTeam(new Team("Preston","myStadium",1900));
+            Championship.addTeam(new Team("Stoke","myStadium",1900));
+            Championship.addTeam(new Team("Blackburn Rovers","myStadium",1900));
+            Championship.addTeam(new Team("Coventry","myStadium",1900));
+            Championship.addTeam(new Team("Nottingham Forest","myStadium",1900));
+            Championship.addTeam(new Team("Birmingham City","myStadium",1900));
+            Championship.addTeam(new Team("Bristol City","myStadium",1900));
+            Championship.addTeam(new Team("Huddersfield","myStadium",1900));
+            Championship.addTeam(new Team("Derby County","myStadium",1900));
+            Championship.addTeam(new Team("Wycombe","myStadium",1900));
+            Championship.addTeam(new Team("Rotherham","myStadium",1900));
+            Championship.addTeam(new Team("Sheffield Wednesday","myStadium",1900));
+            Bundesliga.addTeam(new Team("Augsburg","myStadium",1900));
+            Bundesliga.addTeam(new Team("Bayern Münich","Allianz Arena",1900));
+            Bundesliga.addTeam(new Team("Bielefeld","myStadium",1900));
+            Bundesliga.addTeam(new Team("Brême","myStadium",1900));
+            Bundesliga.addTeam(new Team("Cologne","myStadium",1900));
+            Bundesliga.addTeam(new Team("Dortmund","Signal Iduna Park",1900));
+            Bundesliga.addTeam(new Team("Francfort","myStadium",1900));
+            Bundesliga.addTeam(new Team("Fribourg","myStadium",1900));
+            Bundesliga.addTeam(new Team("Hertha Berlin","myStadium",1900));
+            Bundesliga.addTeam(new Team("Hoffenheim","myStadium",1900));
+            Bundesliga.addTeam(new Team("Leipzig","myStadium",1900));
+            Bundesliga.addTeam(new Team("Leverkusen","myStadium",1900));
+            Bundesliga.addTeam(new Team("Mayence","myStadium",1900));
+            Bundesliga.addTeam(new Team("Mönchengladbach","myStadium",1900));
+            Bundesliga.addTeam(new Team("Schalke 04","myStadium",1900));
+            Bundesliga.addTeam(new Team("Stuttgart","myStadium",1900));
+            Bundesliga.addTeam(new Team("Union Berlin","myStadium",1900));
+            Bundesliga.addTeam(new Team("Wolfsburg","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Aue","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Bochum","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Braunschweig","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Darmstadt","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Düsseldorf","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Fürth","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Hamburg","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Hanovre","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Heidenheim","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Karlsruhe","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Kiel","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Nuremberg","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Osnabrück","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Paderborn","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Regensburg","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Sandhausen","myStadium",1900));
+            Bundesliga2.addTeam(new Team("St-Pauli","myStadium",1900));
+            Bundesliga2.addTeam(new Team("Würzburg","myStadium",1900));
+            SuperLeague.addTeam(new Team("Bâle","Stade Saint-Jacques",1900));
+            SuperLeague.addTeam(new Team("Lausanne","myStadium",1900));
+            SuperLeague.addTeam(new Team("Lucerne","myStadium",1900));
+            SuperLeague.addTeam(new Team("Lugano","myStadium",1900));
+            SuperLeague.addTeam(new Team("Saint-Gall","myStadium",1900));
+            SuperLeague.addTeam(new Team("Servette","La Praille",1900));
+            SuperLeague.addTeam(new Team("Sion","Tourbillon",1900));
+            SuperLeague.addTeam(new Team("Vaduz","myStadium",1900));
+            SuperLeague.addTeam(new Team("Young Boys","Wankdorf",1900));
+            SuperLeague.addTeam(new Team("Zurich","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Grasshopper","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Thoune","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Stade Lausanne","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Schaffhouse","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Aarau","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Winterthour","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Wil","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Kriens","myStadium",1900));
+            ChallengeLeague.addTeam(new Team("Xamax","La Maladière",1900));
+            ChallengeLeague.addTeam(new Team("Chiasso","myStadium",1900));
 
-            Team fcSaintGall = new Team("FC Saint-Gall", "Kybunpark", 1879, superLeagueFromEm);
-
-            // Création d'une nouvelle Team sans League
-            Team fcPorrentruy = new Team("FC Porrentruy", "Stade du Tirage", 1904);
-            // Ajout de la Team depuis la League
-            superLeagueFromEm.addTeam(fcPorrentruy);
 
             // Persistence des Teams créées
-            em.persist(fcBure);
-            em.persist(fcPorrentruy);
-            em.persist(fcSaintGall);
+            for (Team t :
+                    SuperLeague.getTeams()) {
+                em.persist(t);
+            }
+            for (Team t :
+                    ChallengeLeague.getTeams()) {
+                em.persist(t);
+            }
+            for (Team t :
+                    PremierLeague.getTeams()) {
+                em.persist(t);
+            }
+            for (Team t :
+                    Championship.getTeams()) {
+                em.persist(t);
+            }
+            for (Team t :
+                    Bundesliga.getTeams()) {
+                em.persist(t);
+            }
+            for (Team t :
+                    Bundesliga2.getTeams()) {
+                em.persist(t);
+            }
 
             // Test JQL, récupération d'une Team
-            Team fcBureFromEm = (Team) em.createQuery("from Team where name = 'FC Bure'").getSingleResult();
+            Team fcSion = (Team) em.createQuery("from Team where name = 'Sion'").getSingleResult();
 
             // Création d'un nouveau Player
-            Player crittinDavid = new Player("Crittin", "David", LocalDate.of(1992, 1, 8), fcBureFromEm, switzerland, "Avant-centre", 9, 180, 85);
+            Player crittinDavid = new Player("Crittin", "David", LocalDate.of(1992, 1, 8), fcSion, switzerland, "Attaquant", 9, 180, 85);
 
             // Création d'un nouveau Player
-            Player meyerSylvain = new Player("Meyer", "Sylvain", LocalDate.of(1994, 06, 22), fcBureFromEm, switzerland, "Défenseur", 5, 187, 75);
+            Player meyerSylvain = new Player("Meyer", "Sylvain", LocalDate.of(1994, 06, 22), fcSion, switzerland, "Défenseur", 5, 187, 75);
 
+            Team fcSaintGall = (Team) em.createQuery("from Team where name = 'Saint-Gall'").getSingleResult();
             List<Player> playersStGall = new ArrayList<>();
             playersStGall.add(new Player("Guillemenot", "Jérémy", LocalDate.of(1998, 1, 6), fcSaintGall, switzerland, "Attaquant", 43, 180, 70));
             playersStGall.add(new Player("Rapp", "Simone", LocalDate.of(1992, 10,1), fcSaintGall, switzerland, "Attaquant", 27, 180, 70));
@@ -91,9 +213,9 @@ public class TestFootball {
             em.persist(crittinDavid);
             em.persist(meyerSylvain);
 
-            // Création d'un nouveau Transfer (les deux opérations seront faites par une méthode transactionnelle)
-            Transfer transfer = new Transfer(LocalDateTime.now(), crittinDavid, crittinDavid.getCurrentTeam(), fcPorrentruy);
-            crittinDavid.setCurrentTeam(fcPorrentruy);
+            // Création d'un nouveau Transfer
+            Transfer transfer = new Transfer(LocalDateTime.now(), crittinDavid, crittinDavid.getCurrentTeam(), fcSaintGall);
+            crittinDavid.setCurrentTeam(fcSaintGall);
 
             // Persistence du Transfer créé et du Player transféré
             em.persist(transfer);
@@ -101,15 +223,12 @@ public class TestFootball {
 
 
             // Test JQL, récupération d'une Team
-            Team fcPorrentruyFromEm = (Team) em.createQuery("from Team where name = 'FC Porrentruy'").getSingleResult();
 
             // Création d'un nouveau Trainer
-            Trainer depeursingeAdrien = new Trainer("Depeursinge", "Adrien", LocalDate.of(1980, 1, 1), fcPorrentruyFromEm, switzerland, "FIFA Pro", "Principal");
-            Trainer constantinChristian = new Trainer("Constantin", "Christian", LocalDate.of(1957, 7, 1), fcBure, switzerland, "FIFA Pro", "Principal");
+            Trainer constantinChristian = new Trainer("Constantin", "Christian", LocalDate.of(1957, 7, 1), fcSion, switzerland, "FIFA Pro", "Principal");
             Trainer zeidlerPeter = new Trainer("Zeidler", "Peter", LocalDate.of(1962, 8, 8), fcSaintGall, germany, "FIFA Pro", "Principal");
 
             // Persistence du Trainer créé
-            em.persist(depeursingeAdrien);
             em.persist(constantinChristian);
             em.persist(zeidlerPeter);
 

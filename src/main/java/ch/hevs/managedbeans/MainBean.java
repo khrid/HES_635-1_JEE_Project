@@ -13,6 +13,7 @@ import java.util.List;
 
 public class MainBean {
     private Football football;
+    private List<String> messages;
 
     // LeagueBean
     private String targetLeague;
@@ -42,7 +43,6 @@ public class MainBean {
 
     // TransferBean
     private List<Transfer> transfers;
-    private String message;
 
     @PostConstruct
     public void initialize() throws NamingException {
@@ -83,7 +83,15 @@ public class MainBean {
 
         // TransferBean
         transfers = football.getTransfers();
-        message = "";
+        messages = new ArrayList<>();
+    }
+
+    public void reset(){
+        messages.clear();
+    }
+
+    public List<String> getMessages(){
+        return messages;
     }
 
     // LeagueBean
@@ -235,23 +243,80 @@ public class MainBean {
         }
     }
 
-    public void updateNumber() {
+    public String updateNumber() {
         if(targetPlayerObject.getNumber() == number) {
             System.out.println("updateNumber - new and old number are the same");
+            messages.add("Oups, " + targetPlayer + " shirt number is already #" + number);
+            return "";
+        }else{
+            football.updateNumber(targetPlayerObject, number);
+            messages.add(targetPlayer + " shirt number successfully updated to #" + number);
+            return "changePlayerNumberSuccess.xhtml";
         }
-        football.updateNumber(targetPlayerObject, number);
     }
 
-    public void createNewPlayer() {
-        football.createNewPlayer(newPlayer);
+    public String makeNewNumberUpdate(){
+        reset();
+        return "changePlayerNumber.xhtml";
     }
 
-    public void updatePlayerInfo(){
+    public String createNewPlayer() {
+        reset();
+        boolean isValid = true;
+
+        // TODO Voir comment gérer le pays
+        Country c = new Country("Switzerland", "CH");
+        newPlayer.setNationality(c);
+
+        if(newPlayer.getLastname().equals("")){
+            messages.add("Lastname is empty");
+            isValid = false;
+        }
+        if(newPlayer.getFirstname().equals("")){
+            messages.add("Firstname is empty");
+            isValid = false;
+        }
+        if(newPlayer.getPosition().equals("")){
+            messages.add("Position is empty");
+            isValid = false;
+        }
+        if(targetTeam == null){
+            messages.add("No team selected");
+            isValid = false;
+        }
+        // TODO Gérer erreurs numéro, taille, poids
+
+        if(!isValid){
+            messages.add(0,"Following errors occured :");
+            return "";
+        }else{
+            //newPlayer.setCurrentTeam(targetTeam); // TODO Régler problème de persistance quand on donne l'équipe
+            football.createNewPlayer(newPlayer);
+            refreshPlayersList();
+            messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully created");
+            return "addNewPlayerSuccess.xhtml";
+        }
+    }
+
+    public String makeNewPlayerInsertion(){
+        reset();
+        newPlayer = new Player();
+        return "addNewPlayer.xhtml";
+    }
+
+    public String updatePlayerInfo(){
+        // TODO voir si on gère la détection de modification ou non (actuellement on update même si aucun changement)
         football.updatePlayerInfo(playerToUpdate);
+        messages.add(playerToUpdate.getFirstname() + " " + playerToUpdate.getLastname() + " successfully updated");
+        return "updatePlayerInfoSuccess.xhtml";
+    }
+
+    public String makeNewPlayerInfoUpdate(){
+        reset();
+        return "updatePlayerInfo.xhtml";
     }
 
     public void refreshPlayersList(){
-        players=football.getPlayers();
         players = football.getPlayers();
         this.playerNames = new ArrayList<>();
         for (Player p : players) {
@@ -297,10 +362,6 @@ public class MainBean {
 
     // TransferBean
 
-    public String getMessage(){
-        return message;
-    }
-
     public List<Transfer> getTransfers() {
         System.out.println("getTransfers");
         return transfers;
@@ -309,18 +370,14 @@ public class MainBean {
     public String transferPlayer(){
         if(targetPlayerObject.getCurrentTeam().getId() == targetTeam.getId()) {
             System.out.println("transferPlayer - new and old team are the same");
-            message = "Oups, " + targetPlayer + " already plays for " + targetTeamName;
+            messages.add("Oups, " + targetPlayer + " already plays for " + targetTeamName);
             return "";
         }else {
             football.transferPlayer(targetPlayerObject, targetTeam);
             transfers = football.getTransfers();
-            message = targetPlayer + " successfully transfered to " + targetTeamName;
+            messages.add(targetPlayer + " successfully transfered to " + targetTeamName);
             return "transferPlayerSuccess.xhtml";
         }
-    }
-
-    public void reset(){
-        message = "";
     }
 
     public String makeNewTransfer(){

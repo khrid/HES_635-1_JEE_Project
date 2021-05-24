@@ -23,16 +23,17 @@ public class Team {
     @JoinColumn(name="fk_league")
     private League currentLeague;
 
-    @OneToOne @JoinColumn(name="fk_trainer")
+    @OneToOne
+    @JoinColumn(name="fk_trainer")
     private Trainer trainer;
 
-    @OneToMany(mappedBy = "currentTeam", cascade = CascadeType.MERGE )    // A été modifié par Sylvain pour que les transferts fonctionnent
+    @OneToMany(mappedBy = "currentTeam", cascade = CascadeType.ALL )
     private List<Player> contingent;
 
-    @OneToMany(mappedBy = "oldTeam", cascade = CascadeType.MERGE )
+    @OneToMany(mappedBy = "oldTeam", cascade = CascadeType.ALL )
     private List<Transfer> freedPlayerTransfers;
 
-    @OneToMany(mappedBy = "newTeam", cascade = CascadeType.MERGE )
+    @OneToMany(mappedBy = "newTeam", cascade = CascadeType.ALL )
     private List<Transfer> recrutedPlayerTransfers;
 
     public Long getId() { return id; }

@@ -15,7 +15,7 @@ public class Person {
     @Column(name="lastname", nullable = false)
     private String lastname;
 
-    @Column(name="firstname")//, nullable = false)
+    @Column(name="firstname", nullable = false)
     private String firstname;
 
     @Column(name="dateOfBirth")
