@@ -15,6 +15,7 @@ import java.util.List;
 public class MainBean {
     private Football football;
     private List<String> messages;
+    private boolean isValid = true;
 
     // LeagueBean
     private String targetLeague;
@@ -86,8 +87,65 @@ public class MainBean {
         updateLeagueTeams(targetLeague);
     }
 
-    public void reset(){
+    private void reset(){
         messages.clear();
+        isValid = true;
+    }
+
+    private void checkLastname(Player p){
+        if(p.getLastname().length() < 1 || p.getLastname().length() > 40){
+            messages.add("Lastname must be between 1 and 40 characters");
+            isValid = false;
+        }
+    }
+
+    private void checkFirstname(Player p){
+        if(p.getFirstname().length() < 1 || p.getFirstname().length() > 40){
+            messages.add("Firstname must be between 1 and 40 characters");
+            isValid = false;
+        }
+    }
+
+    private void checkPosition(Player p){
+        if(p.getPosition().length() < 1 || p.getPosition().length() > 40){
+            messages.add("Position must be between 1 and 40 characters");
+            isValid = false;
+        }
+    }
+
+    private void checkTeam(){
+        if(targetTeam == null){
+            messages.add("No team selected");
+            isValid = false;
+        }
+    }
+
+    private void checkNumber(int number){
+        if(number < 1 || number > 99){
+            messages.add("Number must be between 1 and 99");
+            isValid = false;
+        }
+    }
+
+    private void checkHeight(Player p){
+        if(p.getHeight() < 100 || p.getHeight() > 250){
+            messages.add("Height must be between 100 and 250 (in cm)");
+            isValid = false;
+        }
+    }
+
+    private void checkWeight(Player p){
+        if(p.getWeight() < 30 || p.getWeight() > 200){
+            messages.add("Weight must be between 30 and 200 (in kg)");
+            isValid = false;
+        }
+    }
+
+    private void checkDateOfBirth(Player p){
+        if(!p.isDateValid()){
+            messages.add("Invalid date format (pattern is yyyy-mm-dd)");
+            isValid = false;
+        }
     }
 
     public List<String> getMessages(){
@@ -179,7 +237,7 @@ public class MainBean {
             return "promotionRelegationSuccess.xhtml";
         } else {
             System.out.println("manageTeam - Can't promote when already in 1st division.");
-            messages.add("Oups, can't promote team because it is already in highest division");
+            messages.add("Can't promote team because it is already in highest division");
             return "showTeamToManage.xhtml";
         }
     }
@@ -191,7 +249,7 @@ public class MainBean {
             messages.add(targetTeam.getName() + " successfully relegated");
             return "promotionRelegationSuccess.xhtml";
         }else{
-            messages.add("Oups, can't relegate team because it is already in lowest division");
+            messages.add("Can't relegate team because it is already in lowest division");
             return "showTeamToManage.xhtml";
         }
     }
@@ -240,13 +298,13 @@ public class MainBean {
         return playerNames;
     }
 
-    public Player getNewPlayer() { return newPlayer; }
+    public Player getNewPlayer() {
+        return newPlayer;
+    }
 
-    public void setNewPlayer(Player newPlayer) { this.newPlayer = newPlayer; }
-
-    public Player getPlayerToUpdate() { return playerToUpdate; }
-
-    public void setPlayerToUpdate(Player playerToUpdate) { this.playerToUpdate = playerToUpdate; }
+    public Player getPlayerToUpdate() {
+        return playerToUpdate;
+    }
 
     public void updateTargetPlayer(ValueChangeEvent event) {
         System.out.println("updateTargetPlayer");
@@ -256,7 +314,6 @@ public class MainBean {
                 players) {
             if((p.getFirstname() + " " + p.getLastname()).equals(targetPlayer)) {
                 targetPlayerObject = p;
-                //currentNumber = targetPlayerObject.getNumber();
                 System.out.println("updateTargetPlayer - player updated to "+targetPlayerObject.getLastname());
             }
         }
@@ -264,78 +321,55 @@ public class MainBean {
 
     public String updateNumber() {
         reset();
+
+        checkNumber(newNumber);
+
         if(targetPlayerObject.getNumber() == newNumber) {
             System.out.println("updateNumber - new and old number are the same");
-            messages.add("Oups, " + targetPlayer + " number is already #" + newNumber);
-        }else if(targetPlayerObject.getNumber() < 1 || targetPlayerObject.getNumber() > 99){
-            messages.add("Oups, number must be between 1 and 99");
+            messages.add(targetPlayer + " number is already #" + newNumber);
+            isValid = false;
         }
-        else{
+
+        if(isValid){
             targetPlayerObject.setNumber(newNumber);
             football.updatePlayerInfo(targetPlayerObject);
             messages.add(targetPlayer + " number successfully updated to #" + targetPlayerObject.getNumber());
             return "changePlayerNumberSuccess.xhtml";
+        }else{
+            return "";
         }
-        return "";
     }
 
     public String makeNewNumberUpdate(){
         reset();
         return "changePlayerNumber.xhtml";
+        //return "index.xhtml";
     }
 
     public String createNewPlayer() {
         reset();
-        boolean isValid = true;
-
         // TODO Voir comment gérer le pays
         Country c = new Country("Switzerland", "CH");
         newPlayer.setNationality(c);
 
-        if(newPlayer.getLastname().length() < 1 || newPlayer.getLastname().length() > 40){
-            messages.add("Lastname must be between 1 and 40 characters");
-            isValid = false;
-        }
-        if(newPlayer.getFirstname().length() < 1 || newPlayer.getFirstname().length() > 40){
-            messages.add("Firstname must be between 1 and 40 characters");
-            isValid = false;
-        }
-        if(newPlayer.getPosition().length() < 1 || newPlayer.getPosition().length() > 40){
-            messages.add("Position must be between 1 and 40 characters");
-            isValid = false;
-        }
-        if(targetTeam == null){
-            messages.add("No team selected");
-            isValid = false;
-        }
-        if(newPlayer.getNumber() < 1 || newPlayer.getNumber() > 99){
-            messages.add("Number must be between 1 and 99");
-            isValid = false;
-        }
-        if(newPlayer.getHeight() < 100 || newPlayer.getHeight() > 250){
-            messages.add("Height must be between 100 and 250 (in cm)");
-            isValid = false;
-        }
-        if(newPlayer.getWeight() < 30 || newPlayer.getWeight() > 200){
-            messages.add("Weight must be between 30 and 200 (in kg)");
-            isValid = false;
-        }
-        // TODO Gérer ça différemment car exception qui se produit avant d'arriver ici
-        if(!newPlayer.isDateValid()){
-            messages.add("Invalid date format (pattern is yyyy-mm-dd)");
-            isValid = false;
-        }
+        checkLastname(newPlayer);
+        checkFirstname(newPlayer);
+        checkPosition(newPlayer);
+        checkTeam();
+        checkNumber(newPlayer.getNumber());
+        checkHeight(newPlayer);
+        checkWeight(newPlayer);
+        checkDateOfBirth(newPlayer);
 
-
-        if(!isValid){
-            messages.add(0,"Oups, following errors occured :");
-            return "";
-        }else{
+        if(isValid){
             football.createNewPlayer(newPlayer, targetTeam);
             refreshPlayersList();
             refreshLeagueTeams();
             messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully registred");
             return "addNewPlayerSuccess.xhtml";
+        }else{
+            messages.add(0,"Following errors occured :");
+            return "";
         }
     }
 
@@ -348,10 +382,19 @@ public class MainBean {
     public String updatePlayerInfo(){
         reset();
 
-        // TODO voir si on gère la détection de modification ou non (actuellement on update même si aucun changement)
-        football.updatePlayerInfo(playerToUpdate);
-        messages.add(playerToUpdate.getFirstname() + " " + playerToUpdate.getLastname() + " successfully updated");
-        return "updatePlayerInfoSuccess.xhtml";
+        checkLastname(playerToUpdate);
+        checkFirstname(playerToUpdate);
+        checkPosition(playerToUpdate);
+        checkDateOfBirth(playerToUpdate);
+
+        if(isValid){
+            football.updatePlayerInfo(playerToUpdate);
+            messages.add(playerToUpdate.getFirstname() + " " + playerToUpdate.getLastname() + " successfully updated");
+            return "updatePlayerInfoSuccess.xhtml";
+        }else{
+            messages.add(0,"Following errors occured :");
+            return "";
+        }
     }
 
     public String makeNewPlayerInfoUpdate(){
@@ -405,7 +448,7 @@ public class MainBean {
         reset();
         if(targetPlayerObject.getCurrentTeam().getId() == targetTeam.getId()) {
             System.out.println("transferPlayer - new and old team are the same");
-            messages.add("Oups, " + targetPlayer + " already plays for " + targetTeamName);
+            messages.add(targetPlayer + " already plays for " + targetTeamName);
             return "";
         }else {
             football.transferPlayer(targetPlayerObject, targetTeam);
@@ -419,6 +462,10 @@ public class MainBean {
     public String makeNewTransfer(){
         reset();
         return "transferPlayer.xhtml";
+    }
+
+    public void returnHome(){
+        reset();
     }
 
 

@@ -10,20 +10,20 @@
    <ui:define name="content">
       <h2>Change a player's information</h2>
       <h:form>
-         <h:outputText value="Lastname:"/>
+         <h:outputText value="Lastname : "/>
          <h:inputText value="#{mainBean.playerToUpdate.lastname}" />
          <br/>
-         <h:outputText value="Firstname:"/>
+         <h:outputText value="Firstname : "/>
          <h:inputText value="#{mainBean.playerToUpdate.firstname}" />
          <br/>
-         <h:outputText value="Position:"/>
+         <h:outputText value="Position : "/>
          <h:inputText value="#{mainBean.playerToUpdate.position}" />
          <br/>
-         <h:outputText value="Date of birth:"/>
+         <h:outputText value="Date of birth : "/>
          <h:inputText value="#{mainBean.playerToUpdate.dateOfBirth}" />
          <br/>
          <br/>
-         <h:commandButton value="update" action="#{mainBean.updatePlayerInfo}"/>
+         <h:commandButton value="Update" action="#{mainBean.updatePlayerInfo}"/>
       </h:form>
       <br/>
       <h:form>
