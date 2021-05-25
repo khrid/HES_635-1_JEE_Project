@@ -33,7 +33,7 @@ public class MainBean {
     private Player targetPlayerObject;
     private Player newPlayer;
     private Player playerToUpdate;
-    private int currentNumber;
+    private int newNumber;
 
     // TrainerBean
     private List<Trainer> trainers;
@@ -139,6 +139,14 @@ public class MainBean {
 
     public void setStats(int[] stats) {
         this.stats = stats;
+    }
+
+    public int getNewNumber() {
+        return targetPlayerObject.getNumber();
+    }
+
+    public void setNewNumber(int newNumber) {
+        this.newNumber = newNumber;
     }
 
     public void updateTargetLeague(ValueChangeEvent event) {
@@ -248,7 +256,7 @@ public class MainBean {
                 players) {
             if((p.getFirstname() + " " + p.getLastname()).equals(targetPlayer)) {
                 targetPlayerObject = p;
-                currentNumber = targetPlayerObject.getNumber();
+                //currentNumber = targetPlayerObject.getNumber();
                 System.out.println("updateTargetPlayer - player updated to "+targetPlayerObject.getLastname());
             }
         }
@@ -256,13 +264,14 @@ public class MainBean {
 
     public String updateNumber() {
         reset();
-        if(targetPlayerObject.getNumber() == currentNumber) {
+        if(targetPlayerObject.getNumber() == newNumber) {
             System.out.println("updateNumber - new and old number are the same");
-            messages.add("Oups, " + targetPlayer + " number is already #" + currentNumber);
+            messages.add("Oups, " + targetPlayer + " number is already #" + newNumber);
         }else if(targetPlayerObject.getNumber() < 1 || targetPlayerObject.getNumber() > 99){
             messages.add("Oups, number must be between 1 and 99");
         }
         else{
+            targetPlayerObject.setNumber(newNumber);
             football.updatePlayerInfo(targetPlayerObject);
             messages.add(targetPlayer + " number successfully updated to #" + targetPlayerObject.getNumber());
             return "changePlayerNumberSuccess.xhtml";
@@ -310,7 +319,8 @@ public class MainBean {
         if(newPlayer.getWeight() < 30 || newPlayer.getWeight() > 200){
             messages.add("Weight must be between 30 and 200 (in kg)");
             isValid = false;
-        } // TODO Gérer ça différemment car exception qui se produit avant d'arriver ici
+        }
+        // TODO Gérer ça différemment car exception qui se produit avant d'arriver ici
         if(Integer.parseInt(newPlayer.getDateOfBirth().split("-")[0]) < 1900 ||
                 Integer.parseInt(newPlayer.getDateOfBirth().split("-")[0]) > LocalDate.now().getYear() ||
                 Integer.parseInt(newPlayer.getDateOfBirth().split("-")[1]) < 1 ||
