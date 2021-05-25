@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,6 +32,8 @@ public class Person {
     @Column(name="nationality")//, nullable = false)
     private Country nationality;
 
+    @Transient
+    boolean dateValid = true;
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Person(){}
@@ -77,7 +80,13 @@ public class Person {
     }
 
     public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = LocalDate.parse(dateOfBirth, formatter);
+        try{
+            this.dateOfBirth = LocalDate.parse(dateOfBirth, formatter);
+            dateValid = true;
+        }catch (DateTimeParseException e){
+            dateValid = false;
+        }
+
     }
 
     public Team getCurrentTeam() {
@@ -94,6 +103,10 @@ public class Person {
 
     public void setNationality(Country nationality) {
         this.nationality = nationality;
+    }
+
+    public boolean isDateValid(){
+        return dateValid;
     }
 
     public int getAge() {

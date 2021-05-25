@@ -321,14 +321,8 @@ public class MainBean {
             isValid = false;
         }
         // TODO Gérer ça différemment car exception qui se produit avant d'arriver ici
-        if(Integer.parseInt(newPlayer.getDateOfBirth().split("-")[0]) < 1900 ||
-                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[0]) > LocalDate.now().getYear() ||
-                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[1]) < 1 ||
-                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[1]) > 12 ||
-                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[2]) < 1 ||
-                Integer.parseInt(newPlayer.getDateOfBirth().split("-")[2]) > 31
-        ){
-            messages.add("Invalid date format (pattern is yyyy-mm-dd");
+        if(!newPlayer.isDateValid()){
+            messages.add("Invalid date format (pattern is yyyy-mm-dd)");
             isValid = false;
         }
 
