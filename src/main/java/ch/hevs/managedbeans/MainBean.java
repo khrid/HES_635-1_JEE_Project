@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class MainBean {
+    // General
     private Football football;
     private List<String> messages;
     private boolean isValid = true;
@@ -21,7 +22,7 @@ public class MainBean {
     private String currentURL;
     private boolean clearState = false;
 
-    // LeagueBean
+    // League
     private String targetLeague;
     private List<String> leagueNames;
     private List<League> leagues;
@@ -31,7 +32,7 @@ public class MainBean {
     private List<String> targetLeagueTeamsNames;
     private int[] stats;
 
-    // PlayerBean
+    // Player
     private List<Player> players;
     private List<String> playerNames;
     private String targetPlayer;
@@ -42,38 +43,43 @@ public class MainBean {
     private List<String> positions;
     private String targetPosition;
 
-    // TrainerBean
+    // Trainer
     private List<Trainer> trainers;
 
-    // TransferBean
+    // Transfer
     private List<Transfer> transfers;
 
     @PostConstruct
     public void initialize() throws NamingException {
+        // General
         System.out.println("MainBean - initialize");
-        // use JNDI to inject reference to bank EJBB
+        // use JNDI to inject reference to football EJBB
         InitialContext ctx = new InitialContext();
         football = (Football) ctx.lookup("java:global/HES_635-1_JEE_Project-1.0-SNAPSHOT/FootballBean!ch.hevs.footballservice.Football");
 
         messages = new ArrayList<>();
         currentURL = "";
 
-        // LeagueBean
+        // League
         refreshLeagues();
         refreshLeagueTeams();
 
 
-        // PlayerBean
+        // Player
         initializeNewPlayer();
         initializePositions();
         refreshPlayersList();
 
-        // TrainerBean
+        // Trainer
         trainers = football.getTrainers();
 
-        // TransferBean
+        // Transfer
         transfers = football.getTransfers();
     }
+
+    /********************
+    ******GENERAL********
+    ********************/
 
     private void initializeNewPlayer() {
         newPlayer = new Player();
@@ -166,7 +172,21 @@ public class MainBean {
         this.foo = foo;
     }
 
-    // LeagueBean
+    public void reset(){
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        if(!currentURL.equals(request.getRequestURL().toString()) || clearState) {
+            messages.clear();
+            refreshLeagues();
+            refreshLeagueTeams();
+            refreshPlayersList();
+            clearState = false;
+        }
+        currentURL = request.getRequestURL().toString();
+    }
+
+    /********************
+     ******LEAGUE********
+     ********************/
 
     public List<String> getLeagueNames() {
         return leagueNames;
@@ -249,11 +269,11 @@ public class MainBean {
             football.promoteTeam(targetTeam);
             leagues = football.getLeagues();
             messages.add(targetTeam.getName() + " successfully promoted");
-            return "promotionRelegationSuccess.xhtml";
+            return "promotionRelegationSuccess";
         } else {
             System.out.println("manageTeam - Can't promote when already in 1st division.");
             messages.add("Can't promote team because it is already in highest division");
-            return "showTeamToManage.xhtml";
+            return "showTeamToManage";
         }
     }
 
@@ -263,16 +283,16 @@ public class MainBean {
         if(football.relegateTeam(targetTeam)){
             leagues = football.getLeagues();
             messages.add(targetTeam.getName() + " successfully relegated");
-            return "promotionRelegationSuccess.xhtml";
+            return "promotionRelegationSuccess";
         }else{
             messages.add("Can't relegate team because it is already in lowest division");
-            return "showTeamToManage.xhtml";
+            return "showTeamToManage";
         }
     }
 
     public String promotionRelegationDone(){
         messages.clear();
-        return "showTeamToManage.xhtml";
+        return "showTeamToManage";
     }
 
     public String getStatistics() {
@@ -287,7 +307,9 @@ public class MainBean {
     }
 
 
-    // PlayerBean
+    /********************
+     ******PLAYER********
+     ********************/
 
     public List<Player> getPlayers() {
         System.out.println("getPlayers");
@@ -363,7 +385,7 @@ public class MainBean {
             targetPlayerObject.setNumber(newNumber);
             football.updatePlayerInfo(targetPlayerObject);
             messages.add(targetPlayer + " number successfully updated to #" + targetPlayerObject.getNumber());
-            return "changePlayerNumberSuccess.xhtml";
+            return "changePlayerNumberSuccess";
         }else{
             return "";
         }
@@ -372,7 +394,7 @@ public class MainBean {
     public String makeNewNumberUpdate(){
         messages.clear();
         clearState = true;
-        return "changePlayerNumber.xhtml";
+        return "changePlayerNumber";
     }
 
     public String createNewPlayer() {
@@ -399,7 +421,7 @@ public class MainBean {
             refreshLeagueTeams();
             messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully registred");
             initializeNewPlayer();
-            return "addNewPlayerSuccess.xhtml";
+            return "addNewPlayerSuccess";
         }else{
             messages.add(0,"Following errors occured :");
             return "";
@@ -409,7 +431,7 @@ public class MainBean {
     public String makeNewPlayerInsertion(){
         messages.clear();
         clearState = true;
-        return "addNewPlayer.xhtml";
+        return "addNewPlayer";
     }
 
     public String updatePlayerInfo(){
@@ -425,7 +447,7 @@ public class MainBean {
         if(isValid){
             football.updatePlayerInfo(playerToUpdate);
             messages.add(playerToUpdate.getFirstname() + " " + playerToUpdate.getLastname() + " successfully updated");
-            return "updatePlayerInfoSuccess.xhtml";
+            return "updatePlayerInfoSuccess";
         }else{
             messages.add(0,"Following errors occured :");
             return "";
@@ -435,7 +457,7 @@ public class MainBean {
     public String makeNewPlayerInfoUpdate(){
         messages.clear();
         clearState = true;
-        return "updatePlayerInfo.xhtml";
+        return "updatePlayerInfo";
     }
 
     public void refreshPlayersList(){
@@ -451,7 +473,9 @@ public class MainBean {
     }
 
 
-    // TeamBean
+    /********************
+     *******TEAM*********
+     ********************/
 
     public void updateTargetTeam(ValueChangeEvent event) {
         System.out.println("updateTargetTeam");
@@ -466,7 +490,9 @@ public class MainBean {
     }
 
 
-    // TrainerBean
+    /********************
+     ******TRAINER*******
+     ********************/
 
     public List<Trainer> getTrainers() {
         System.out.println("getTrainers");
@@ -474,7 +500,9 @@ public class MainBean {
     }
 
 
-    // TransferBean
+    /********************
+     *****TRANSFER*******
+     ********************/
 
     public List<Transfer> getTransfers() {
         System.out.println("getTransfers");
@@ -493,26 +521,13 @@ public class MainBean {
             transfers = football.getTransfers();
             refreshLeagueTeams();
             messages.add(targetPlayer + " successfully transfered to " + targetTeamName);
-            return "transferPlayerSuccess.xhtml";
+            return "transferPlayerSuccess";
         }
     }
 
     public String makeNewTransfer(){
         messages.clear();
         clearState = true;
-        return "transferPlayer.xhtml";
+        return "transferPlayer";
     }
-
-    public void reset(){
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        if(!currentURL.equals(request.getRequestURL().toString()) || clearState) {
-            messages.clear();
-            refreshLeagues();
-            refreshLeagueTeams();
-            refreshPlayersList();
-            clearState = false;
-        }
-        currentURL = request.getRequestURL().toString();
-    }
-
 }
