@@ -244,6 +244,8 @@ public class MainBean {
     public void updateTargetLeague(ValueChangeEvent event) {
         System.out.println("updateTargetLeague");
         updateLeagueTeams(((String) event.getNewValue()));
+        // TODO
+        //updateLeagueTrainers
     }
 
     private void updateLeagueTeams(String leagueName) {
@@ -387,6 +389,7 @@ public class MainBean {
             targetPlayerObject.setNumber(newNumber);
             football.updatePlayerInfo(targetPlayerObject);
             messages.add(targetPlayer + " number successfully updated to #" + targetPlayerObject.getNumber());
+            clearState = true;
             return "changePlayerNumberSuccess";
         }else{
             return "";
@@ -395,7 +398,6 @@ public class MainBean {
 
     public String makeNewNumberUpdate(){
         messages.clear();
-        clearState = true;
         return "changePlayerNumber";
     }
 
@@ -423,6 +425,7 @@ public class MainBean {
             refreshLeagueTeams();
             messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully registred");
             initializeNewPlayer();
+            clearState = true;
             return "addNewPlayerSuccess";
         }else{
             messages.add(0,"Following errors occured :");
@@ -432,7 +435,6 @@ public class MainBean {
 
     public String makeNewPlayerInsertion(){
         messages.clear();
-        clearState = true;
         return "addNewPlayer";
     }
 
@@ -449,6 +451,7 @@ public class MainBean {
         if(isValid){
             football.updatePlayerInfo(playerToUpdate);
             messages.add(playerToUpdate.getFirstname() + " " + playerToUpdate.getLastname() + " successfully updated");
+            clearState = true;
             return "updatePlayerInfoSuccess";
         }else{
             messages.add(0,"Following errors occured :");
@@ -458,7 +461,6 @@ public class MainBean {
 
     public String makeNewPlayerInfoUpdate(){
         messages.clear();
-        clearState = true;
         return "updatePlayerInfo";
     }
 
@@ -537,13 +539,13 @@ public class MainBean {
             transfers = football.getTransfers();
             refreshLeagueTeams();
             messages.add(targetPlayer + " successfully transfered to " + targetTeamName);
+            clearState = true;
             return "transferPlayerSuccess";
         }
     }
 
     public String makeNewTransfer(){
         messages.clear();
-        clearState = true;
         return "transferPlayer";
     }
 }
