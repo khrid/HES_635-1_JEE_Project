@@ -35,6 +35,8 @@ public class MainBean {
     private Player newPlayer;
     private Player playerToUpdate;
     private int newNumber;
+    private List<String> positions;
+    private String targetPosition;
 
     // TrainerBean
     private List<Trainer> trainers;
@@ -67,6 +69,7 @@ public class MainBean {
         // PlayerBean
         refreshPlayersList();
         initializeNewPlayer();
+        initializePositions();
 
 
         // TrainerBean
@@ -106,13 +109,6 @@ public class MainBean {
         }
     }
 
-    private void checkPosition(Player p){
-        if(p.getPosition().length() < 1 || p.getPosition().length() > 40){
-            messages.add("Position must be between 1 and 40 characters");
-            isValid = false;
-        }
-    }
-
     private void checkTeam(){
         if(targetTeam == null){
             messages.add("No team selected");
@@ -146,6 +142,13 @@ public class MainBean {
             messages.add("Invalid date format (pattern is yyyy-mm-dd)");
             isValid = false;
         }
+    }
+
+    private void initializePositions(){
+        positions = new ArrayList<>();
+        positions.add("Défenseur");
+        positions.add("Milieu");
+        positions.add("Attaquant");
     }
 
     public List<String> getMessages(){
@@ -306,6 +309,18 @@ public class MainBean {
         return playerToUpdate;
     }
 
+    public String getTargetPosition(){
+        return targetPosition;
+    }
+
+    public void setTargetPosition(String targetPosition){
+        this.targetPosition = targetPosition;
+    }
+
+    public List<String> getPositions(){
+        return positions;
+    }
+
     public void updateTargetPlayer(ValueChangeEvent event) {
         System.out.println("updateTargetPlayer");
         targetPlayer = (String) event.getNewValue();
@@ -348,13 +363,14 @@ public class MainBean {
 
     public String createNewPlayer() {
         reset();
-        // TODO Voir comment gérer le pays
+        // Limitation actuelle : on ne créé que des joueurs Suisse
         Country c = new Country("Switzerland", "CH");
         newPlayer.setNationality(c);
 
+        newPlayer.setPosition(targetPosition);
+
         checkLastname(newPlayer);
         checkFirstname(newPlayer);
-        checkPosition(newPlayer);
         checkTeam();
         checkNumber(newPlayer.getNumber());
         checkHeight(newPlayer);
@@ -366,6 +382,7 @@ public class MainBean {
             refreshPlayersList();
             refreshLeagueTeams();
             messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully registred");
+            initializeNewPlayer();
             return "addNewPlayerSuccess.xhtml";
         }else{
             messages.add(0,"Following errors occured :");
@@ -375,16 +392,16 @@ public class MainBean {
 
     public String makeNewPlayerInsertion(){
         reset();
-        initializeNewPlayer();
         return "addNewPlayer.xhtml";
     }
 
     public String updatePlayerInfo(){
         reset();
 
+        playerToUpdate.setPosition(targetPosition);
+
         checkLastname(playerToUpdate);
         checkFirstname(playerToUpdate);
-        checkPosition(playerToUpdate);
         checkDateOfBirth(playerToUpdate);
 
         if(isValid){
@@ -410,7 +427,8 @@ public class MainBean {
         }
         targetPlayerObject = players.get(0);
 
-        playerToUpdate = players.get(1); // TODO à changer pour prendre utilisateur connecté par wildfly
+        playerToUpdate = players.get(1);
+        targetPosition = playerToUpdate.getPosition(); // TODO à changer pour prendre utilisateur connecté par wildfly
     }
 
 
@@ -464,7 +482,7 @@ public class MainBean {
         return "transferPlayer.xhtml";
     }
 
-    public void returnHome(){
+    public void onload(){
         reset();
     }
 

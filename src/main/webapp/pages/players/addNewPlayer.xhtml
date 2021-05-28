@@ -29,7 +29,9 @@
          </h:selectOneMenu>
          <br/>
          <h:outputText value="Position : "/>
-         <h:inputText value="#{mainBean.newPlayer.position}" />
+         <h:selectOneMenu value="#{mainBean.targetPosition}" >
+            <f:selectItems value="#{mainBean.positions}"/>
+         </h:selectOneMenu>
          <br/>
          <h:outputText value="Date of birth : "/>
          <h:inputText value="#{mainBean.newPlayer.dateOfBirth}" />

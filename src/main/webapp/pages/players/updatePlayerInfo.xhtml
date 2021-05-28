@@ -17,7 +17,9 @@
          <h:inputText value="#{mainBean.playerToUpdate.firstname}" />
          <br/>
          <h:outputText value="Position : "/>
-         <h:inputText value="#{mainBean.playerToUpdate.position}" />
+         <h:selectOneMenu value="#{mainBean.targetPosition}" >
+            <f:selectItems value="#{mainBean.positions}"/>
+         </h:selectOneMenu>
          <br/>
          <h:outputText value="Date of birth : "/>
          <h:inputText value="#{mainBean.playerToUpdate.dateOfBirth}" />
