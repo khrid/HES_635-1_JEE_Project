@@ -4,10 +4,11 @@ import ch.hevs.businessobject.*;
 import ch.hevs.footballservice.Football;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import java.time.LocalDate;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,9 @@ public class MainBean {
     private Football football;
     private List<String> messages;
     private boolean isValid = true;
+    private String foo;
+    private String currentURL;
+    private boolean clearState = false;
 
     // LeagueBean
     private String targetLeague;
@@ -51,7 +55,32 @@ public class MainBean {
         InitialContext ctx = new InitialContext();
         football = (Football) ctx.lookup("java:global/HES_635-1_JEE_Project-1.0-SNAPSHOT/FootballBean!ch.hevs.footballservice.Football");
 
+        messages = new ArrayList<>();
+        currentURL = "";
+
         // LeagueBean
+        refreshLeagues();
+        refreshLeagueTeams();
+
+
+        // PlayerBean
+        initializeNewPlayer();
+        initializePositions();
+        refreshPlayersList();
+
+        // TrainerBean
+        trainers = football.getTrainers();
+
+        // TransferBean
+        transfers = football.getTransfers();
+    }
+
+    private void initializeNewPlayer() {
+        newPlayer = new Player();
+        newPlayer.setDateOfBirth("2000-01-01");
+    }
+
+    private void refreshLeagues() {
         leagueNames = new ArrayList<>();
         targetLeagueTeams = new ArrayList<>();
 
@@ -63,36 +92,10 @@ public class MainBean {
         }
         Collections.sort(leagueNames);
         targetLeague = leagueNames.get(0);
-        refreshLeagueTeams();
-
-
-        // PlayerBean
-        refreshPlayersList();
-        initializeNewPlayer();
-        initializePositions();
-
-
-        // TrainerBean
-        trainers = football.getTrainers();
-
-
-        // TransferBean
-        transfers = football.getTransfers();
-        messages = new ArrayList<>();
-    }
-
-    private void initializeNewPlayer() {
-        newPlayer = new Player();
-        newPlayer.setDateOfBirth("2000-01-01");
     }
 
     private void refreshLeagueTeams() {
         updateLeagueTeams(targetLeague);
-    }
-
-    private void reset(){
-        messages.clear();
-        isValid = true;
     }
 
     private void checkLastname(Player p){
@@ -153,6 +156,14 @@ public class MainBean {
 
     public List<String> getMessages(){
         return messages;
+    }
+
+    public String getFoo(){
+        return foo;
+    }
+
+    public void setFoo(String foo){
+        this.foo = foo;
     }
 
     // LeagueBean
@@ -232,7 +243,8 @@ public class MainBean {
     }
 
     public String promoteTeam() {
-        reset();
+        messages.clear();
+
         if (targetTeam.getCurrentLeague().getDivision() > 1) {
             football.promoteTeam(targetTeam);
             leagues = football.getLeagues();
@@ -246,7 +258,8 @@ public class MainBean {
     }
 
     public String relegateTeam() {
-        reset();
+        messages.clear();
+
         if(football.relegateTeam(targetTeam)){
             leagues = football.getLeagues();
             messages.add(targetTeam.getName() + " successfully relegated");
@@ -258,7 +271,7 @@ public class MainBean {
     }
 
     public String promotionRelegationDone(){
-        reset();
+        messages.clear();
         return "showTeamToManage.xhtml";
     }
 
@@ -335,7 +348,8 @@ public class MainBean {
     }
 
     public String updateNumber() {
-        reset();
+        messages.clear();
+        isValid = true;
 
         checkNumber(newNumber);
 
@@ -356,13 +370,15 @@ public class MainBean {
     }
 
     public String makeNewNumberUpdate(){
-        reset();
+        messages.clear();
+        clearState = true;
         return "changePlayerNumber.xhtml";
-        //return "index.xhtml";
     }
 
     public String createNewPlayer() {
-        reset();
+        messages.clear();
+        isValid = true;
+
         // Limitation actuelle : on ne créé que des joueurs Suisse
         Country c = new Country("Switzerland", "CH");
         newPlayer.setNationality(c);
@@ -391,12 +407,14 @@ public class MainBean {
     }
 
     public String makeNewPlayerInsertion(){
-        reset();
+        messages.clear();
+        clearState = true;
         return "addNewPlayer.xhtml";
     }
 
     public String updatePlayerInfo(){
-        reset();
+        messages.clear();
+        isValid = true;
 
         playerToUpdate.setPosition(targetPosition);
 
@@ -415,7 +433,8 @@ public class MainBean {
     }
 
     public String makeNewPlayerInfoUpdate(){
-        reset();
+        messages.clear();
+        clearState = true;
         return "updatePlayerInfo.xhtml";
     }
 
@@ -427,8 +446,8 @@ public class MainBean {
         }
         targetPlayerObject = players.get(0);
 
-        playerToUpdate = players.get(1);
-        targetPosition = playerToUpdate.getPosition(); // TODO à changer pour prendre utilisateur connecté par wildfly
+        playerToUpdate = players.get(0);    // TODO à changer pour prendre utilisateur connecté par wildfly
+        targetPosition = playerToUpdate.getPosition();
     }
 
 
@@ -463,7 +482,8 @@ public class MainBean {
     }
 
     public String transferPlayer(){
-        reset();
+        messages.clear();
+
         if(targetPlayerObject.getCurrentTeam().getId() == targetTeam.getId()) {
             System.out.println("transferPlayer - new and old team are the same");
             messages.add(targetPlayer + " already plays for " + targetTeamName);
@@ -478,13 +498,21 @@ public class MainBean {
     }
 
     public String makeNewTransfer(){
-        reset();
+        messages.clear();
+        clearState = true;
         return "transferPlayer.xhtml";
     }
 
-    public void onload(){
-        reset();
+    public void reset(){
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        if(!currentURL.equals(request.getRequestURL().toString()) || clearState) {
+            messages.clear();
+            refreshLeagues();
+            refreshLeagueTeams();
+            refreshPlayersList();
+            clearState = false;
+        }
+        currentURL = request.getRequestURL().toString();
     }
-
 
 }
