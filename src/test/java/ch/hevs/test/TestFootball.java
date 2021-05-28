@@ -58,6 +58,7 @@ public class TestFootball {
             League Bundesliga2 = (League) em.createQuery("from League where name = 'Bundesliga 2'").getSingleResult();
 
 
+
             // Création d'une nouvelle Team avec la League
             PremierLeague.addTeam(new Team("Arsenal","Emirates Stadium",1900));
             PremierLeague.addTeam(new Team("Aston Villa","myStadium",1900));
@@ -160,8 +161,7 @@ public class TestFootball {
             ChallengeLeague.addTeam(new Team("Xamax","La Maladière",1900));
             ChallengeLeague.addTeam(new Team("Chiasso","myStadium",1900));
 
-
-            // Persistence des Teams créées
+            // Persistence des Teams et des Trainers créées
             for (Team t :
                     SuperLeague.getTeams()) {
                 em.persist(t);
@@ -186,6 +186,7 @@ public class TestFootball {
                     Bundesliga2.getTeams()) {
                 em.persist(t);
             }
+
 
             // Test JQL, récupération d'une Team
             Team fcSion = (Team) em.createQuery("from Team where name = 'Sion'").getSingleResult();
@@ -221,9 +222,6 @@ public class TestFootball {
             em.persist(transfer);
             em.persist(crittinDavid);
 
-
-            // Test JQL, récupération d'une Team
-
             // Création d'un nouveau Trainer
             Trainer constantinChristian = new Trainer("Constantin", "Christian", LocalDate.of(1957, 7, 1), fcSion, switzerland, "FIFA Pro", "Principal");
             Trainer zeidlerPeter = new Trainer("Zeidler", "Peter", LocalDate.of(1962, 8, 8), fcSaintGall, germany, "FIFA Pro", "Principal");
@@ -231,7 +229,6 @@ public class TestFootball {
             // Persistence du Trainer créé
             em.persist(constantinChristian);
             em.persist(zeidlerPeter);
-
 
             // Commit de la transaction
             tx.commit();
