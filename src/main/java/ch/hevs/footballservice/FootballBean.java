@@ -2,6 +2,8 @@ package ch.hevs.footballservice;
 
 import ch.hevs.businessobject.*;
 
+import javax.annotation.Resource;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -15,6 +17,9 @@ import java.util.List;
 
 @Stateless
 public class FootballBean implements Football {
+
+    @Resource
+    private SessionContext ctx;
 
     private List<League> leagues;
 
@@ -73,14 +78,21 @@ public class FootballBean implements Football {
     @Override
     public void promoteTeam(Team team) {
         System.out.println("FootballBean - promoteTeam");
-        String country = team.getCurrentLeague().getCountry().getName();
-        int division = team.getCurrentLeague().getDivision();
+        System.out.println(ctx.getCallerPrincipal().getName() + " wants to promote a team");
 
-        Query query = em.createQuery("FROM League l WHERE l.country.name = '" + country + "' and l.division = " + (division - 1) + "");
-        League newLeague = (League) query.getSingleResult();
-        newLeague.addTeam(team);
-        em.persist(newLeague);
-        em.merge(team);
+        if(ctx.isCallerInRole("leagueManager")
+            || ctx.isCallerInRole("administrator")) {
+            String country = team.getCurrentLeague().getCountry().getName();
+            int division = team.getCurrentLeague().getDivision();
+
+            Query query = em.createQuery("FROM League l WHERE l.country.name = '" + country + "' and l.division = " + (division - 1) + "");
+            League newLeague = (League) query.getSingleResult();
+            newLeague.addTeam(team);
+            em.persist(newLeague);
+            em.merge(team);
+        } else {
+            System.out.println(ctx.getCallerPrincipal().getName() + " can't promote a team");
+        }
     }
 
     @Override

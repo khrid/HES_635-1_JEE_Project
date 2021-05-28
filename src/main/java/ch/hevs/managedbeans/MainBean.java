@@ -364,6 +364,8 @@ public class MainBean {
                 players) {
             if((p.getFirstname() + " " + p.getLastname()).equals(targetPlayer)) {
                 targetPlayerObject = p;
+                playerToUpdate = p;
+                System.out.println(playerToUpdate);
                 System.out.println("updateTargetPlayer - player updated to "+targetPlayerObject.getLastname());
             }
         }
@@ -466,9 +468,23 @@ public class MainBean {
         for (Player p : players) {
             this.playerNames.add(p.getFirstname() + " " + p.getLastname());
         }
-        targetPlayerObject = players.get(0);
 
-        playerToUpdate = players.get(0);    // TODO à changer pour prendre utilisateur connecté par wildfly
+        targetPlayerObject = players.get(0);
+        playerToUpdate = players.get(0);
+
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("player")) {
+            String info = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+            String prenom = info.split("\\.")[0];
+            String nom = info.split("\\.")[1];
+            for (Player p :
+                    players) {
+                if(p.getFirstname().equalsIgnoreCase(prenom) && p.getLastname().equalsIgnoreCase(nom)) {
+                    playerToUpdate = p;
+                    break;
+                }
+            }
+        }
+
         targetPosition = playerToUpdate.getPosition();
     }
 

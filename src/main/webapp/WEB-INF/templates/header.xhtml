@@ -1,6 +1,7 @@
-<div class="topnav" xmlns:h="http://java.sun.com/jsf/html">
+<div class="topnav" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core">
     <div class="bg"/>
-    <a class="active" href="#{request.contextPath}/faces/index.xhtml"><span class="ball">&#9917;</span> Football Manager <span class="ball">&#9917;</span></a>
+    <a class="active" href="#{request.contextPath}/faces/index.xhtml"><span class="ball">&#9917;</span> Football Manager
+        <span class="ball">&#9917;</span></a>
 
     <div class="dropdown">
         <button class="dropbtn">Display
@@ -15,40 +16,80 @@
         </div>
     </div>
 
-    <div class="dropdown">
-        <button class="dropbtn">Manage players
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <div class="dropdown-content">
-                <h:outputLink value="#{request.contextPath}/faces/pages/players/changePlayerNumber.xhtml">Change &#128085; n#</h:outputLink>
-                <h:outputLink value="#{request.contextPath}/faces/pages/players/updatePlayerInfo.xhtml">Update player</h:outputLink>
-                <h:outputLink value="#{request.contextPath}/faces/pages/players/addNewPlayer.xhtml">Add new player</h:outputLink>
-                <h:outputLink value="#{request.contextPath}/faces/pages/transfers/transferPlayer.xhtml">Transfer</h:outputLink>
-            </div>
-        </div>
-    </div>
 
-    <div class="dropdown">
-        <button class="dropbtn">Manage teams
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <div class="dropdown-content">
-                <h:outputLink value="#{request.contextPath}/faces/pages/teams/manageTeams.xhtml">Manage team</h:outputLink>
+    <c:choose>
+        <c:when test="#{request.isUserInRole('trainer')
+                        || request.isUserInRole('player')
+                        || request.isUserInRole('leagueManager')
+                        || request.isUserInRole('administrator')}">
+            <div class="dropdown">
+                <button class="dropbtn">Manage players
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <div class="dropdown-content">
+                        <c:choose>
+                            <c:when test="#{request.isUserInRole('player')}">
+                                <h:outputLink
+                                        value="#{request.contextPath}/faces/pages/players/updatePlayerInfo.xhtml">Update player</h:outputLink>
+                            </c:when>
+                            <c:when test="#{request.isUserInRole('leagueManager') || request.isUserInRole('administrator')}">
+                                <h:outputLink
+                                        value="#{request.contextPath}/faces/pages/players/updatePlayerInfo.xhtml">Update player</h:outputLink>
+                                <h:outputLink
+                                        value="#{request.contextPath}/faces/pages/players/changePlayerNumber.xhtml">Change &#128085; n#</h:outputLink>
+                                <h:outputLink
+                                        value="#{request.contextPath}/faces/pages/players/addNewPlayer.xhtml">Add new player</h:outputLink>
+                                <h:outputLink
+                                        value="#{request.contextPath}/faces/pages/transfers/transferPlayer.xhtml">Transfer</h:outputLink>
+                            </c:when>
+                        </c:choose>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <div class="dropdown">
-        <button class="dropbtn">Manage leagues
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <div class="dropdown-content">
-                <h:outputLink value="#{request.contextPath}/faces/pages/leagues/selectLeague.xhtml">Statistics</h:outputLink>
+        </c:when>
+    </c:choose>
+    <c:choose>
+        <c:when test="#{request.isUserInRole('leagueManager')
+                        || request.isUserInRole('administrator')}">
+            <div class="dropdown">
+                <button class="dropbtn">Manage teams
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <div class="dropdown-content">
+                        <h:outputLink
+                                value="#{request.contextPath}/faces/pages/teams/manageTeams.xhtml">Manage team</h:outputLink>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </c:when>
+    </c:choose>
 
+    <c:choose>
+        <c:when test="#{request.isUserInRole('leagueManager')
+                        || request.isUserInRole('administrator')}">
+            <div class="dropdown">
+                <button class="dropbtn">Manage leagues
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <div class="dropdown-content">
+                        <h:outputLink
+                                value="#{request.contextPath}/faces/pages/leagues/selectLeague.xhtml">Statistics</h:outputLink>
+                    </div>
+                </div>
+            </div>
+        </c:when>
+    </c:choose>
+
+
+    <div class="right">
+        <c:choose>
+            <c:when test="#{request.isUserInRole('player')}">&#9917;</c:when>
+            <c:when test="#{request.isUserInRole('administrator')}">&#129464;</c:when>
+            <c:otherwise>&#128100;</c:otherwise>
+        </c:choose>
+        #{request.remoteUser}
+    </div>
 </div>
