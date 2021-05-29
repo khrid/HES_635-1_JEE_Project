@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <f:metadata>
    <f:viewParam name="foo" value="#{mainBean.foo}" />
@@ -21,17 +22,25 @@
          <h:outputText value="Firstname : "/>
          <h:inputText value="#{mainBean.newPlayer.firstname}" />
          <br/>
-         <h:outputText value="Select the team's league : "/>
-         <h:selectOneMenu value="#{mainBean.targetLeague}" valueChangeListener="#{mainBean.updateTargetLeague}"
+         <c:choose>
+            <c:when test="#{request.isUserInRole('administrator')}">
+               <h:outputText value="Select the team's league : "/>
+                  <h:selectOneMenu value="#{mainBean.targetLeague}" valueChangeListener="#{mainBean.updateTargetLeague}"
                           onchange="submit()">
-            <f:selectItems value="#{mainBean.leagueNames}"/>
-         </h:selectOneMenu>
-         <br/>
-         <h:outputText value="Team : "/>
-         <h:selectOneMenu value="#{mainBean.targetTeamName}" valueChangeListener="#{mainBean.updateTargetTeam}"
-                          onchange="submit()">
-            <f:selectItems value="#{mainBean.targetLeagueTeamsNames}"/>
-         </h:selectOneMenu>
+                  <f:selectItems value="#{mainBean.leagueNames}"/>
+               </h:selectOneMenu>
+               <br/>
+               <h:outputText value="Team : "/>
+               <h:selectOneMenu value="#{mainBean.targetTeamName}" valueChangeListener="#{mainBean.updateTargetTeam}"
+                                onchange="submit()">
+                  <f:selectItems value="#{mainBean.targetLeagueTeamsNames}"/>
+               </h:selectOneMenu>
+            </c:when>
+            <c:when test="#{request.isUserInRole('trainer')}">
+               <h:outputText value="Team : "/>
+               <h:outputText value="#{mainBean.targetTeamName}"/>
+            </c:when>
+         </c:choose>
          <br/>
          <h:outputText value="Position : "/>
          <h:selectOneMenu value="#{mainBean.targetPosition}" >

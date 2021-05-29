@@ -34,6 +34,7 @@ public class MainBean {
 
     // Player
     private List<Player> players;
+    private List<Player> playersToManage;
     private List<String> playerNames;
     private String targetPlayer;
     private Player targetPlayerObject;
@@ -45,6 +46,7 @@ public class MainBean {
 
     // Trainer
     private List<Trainer> trainers;
+    private Trainer connectedTrainer;
 
     // Transfer
     private List<Transfer> transfers;
@@ -60,6 +62,10 @@ public class MainBean {
         messages = new ArrayList<>();
         currentURL = "";
 
+        // Trainer
+        trainers = football.getTrainers();
+        getConnectedTrainer();
+
         // League
         refreshLeagues();
         refreshLeagueTeams();
@@ -69,9 +75,6 @@ public class MainBean {
         initializeNewPlayer();
         initializePositions();
         refreshPlayersList();
-
-        // Trainer
-        trainers = football.getTrainers();
 
         // Transfer
         transfers = football.getTransfers();
@@ -101,7 +104,13 @@ public class MainBean {
     }
 
     private void refreshLeagueTeams() {
-        updateLeagueTeams(targetLeague);
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("trainer")) {
+            targetTeamName = connectedTrainer.getCurrentTeam().getName();
+            updateLeagueTeams(" - " + connectedTrainer.getCurrentTeam().getCurrentLeague().getName());
+            bindTeamObject(targetTeamName);
+        }else{
+            updateLeagueTeams(targetLeague);
+        }
     }
 
     private void checkLastname(Player p){
@@ -244,8 +253,6 @@ public class MainBean {
     public void updateTargetLeague(ValueChangeEvent event) {
         System.out.println("updateTargetLeague");
         updateLeagueTeams(((String) event.getNewValue()));
-        // TODO
-        //updateLeagueTrainers
     }
 
     private void updateLeagueTeams(String leagueName) {
@@ -267,13 +274,11 @@ public class MainBean {
     public String promoteTeam() {
         messages.clear();
 
-        if (targetTeam.getCurrentLeague().getDivision() > 1) {
-            football.promoteTeam(targetTeam);
+        if(football.promoteTeam(targetTeam)){
             leagues = football.getLeagues();
             messages.add(targetTeam.getName() + " successfully promoted");
             return "promotionRelegationSuccess";
-        } else {
-            System.out.println("manageTeam - Can't promote when already in 1st division.");
+        }else{
             messages.add("Can't promote team because it is already in highest division");
             return "showTeamToManage";
         }
@@ -363,7 +368,7 @@ public class MainBean {
         targetPlayer = (String) event.getNewValue();
         System.out.println(targetPlayer);
         for (Player p :
-                players) {
+                playersToManage) {
             if((p.getFirstname() + " " + p.getLastname()).equals(targetPlayer)) {
                 targetPlayerObject = p;
                 playerToUpdate = p;
@@ -466,25 +471,31 @@ public class MainBean {
 
     public void refreshPlayersList(){
         players = football.getPlayers();
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("trainer")) {
+            playersToManage = football.getPlayersByTeam(connectedTrainer.getCurrentTeam());
+        }else{
+            playersToManage = players;
+        }
         this.playerNames = new ArrayList<>();
-        for (Player p : players) {
+        for (Player p : playersToManage) {
             this.playerNames.add(p.getFirstname() + " " + p.getLastname());
         }
 
-        targetPlayerObject = players.get(0);
-        playerToUpdate = players.get(0);
+        targetPlayerObject = playersToManage.get(0);
 
         if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("player")) {
             String info = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
             String prenom = info.split("\\.")[0];
             String nom = info.split("\\.")[1];
             for (Player p :
-                    players) {
+                    playersToManage) {
                 if(p.getFirstname().equalsIgnoreCase(prenom) && p.getLastname().equalsIgnoreCase(nom)) {
                     playerToUpdate = p;
                     break;
                 }
             }
+        }else{
+            playerToUpdate = playersToManage.get(0);
         }
 
         targetPosition = playerToUpdate.getPosition();
@@ -498,6 +509,10 @@ public class MainBean {
     public void updateTargetTeam(ValueChangeEvent event) {
         System.out.println("updateTargetTeam");
         targetTeamName = (String) event.getNewValue();
+        bindTeamObject(targetTeamName);
+    }
+
+    private void bindTeamObject(String targetTeamName) {
         for (Team t :
                 targetLeagueTeams) {
             if(t.getName().equals(targetTeamName)) {
@@ -515,6 +530,21 @@ public class MainBean {
     public List<Trainer> getTrainers() {
         System.out.println("getTrainers");
         return trainers;
+    }
+
+    private void getConnectedTrainer() {
+        if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("trainer")) {
+            String info = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+            String prenom = info.split("\\.")[0];
+            String nom = info.split("\\.")[1];
+            for (Trainer t :
+                    trainers) {
+                if (t.getFirstname().equalsIgnoreCase(prenom) && t.getLastname().equalsIgnoreCase(nom)) {
+                    connectedTrainer = t;
+                    break;
+                }
+            }
+        }
     }
 
 

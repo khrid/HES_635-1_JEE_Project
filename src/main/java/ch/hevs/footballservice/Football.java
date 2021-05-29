@@ -9,12 +9,13 @@ import java.util.List;
 public interface Football {
     List<League> getLeagues();
     List<Player> getPlayers();
+    List<Player> getPlayersByTeam(Team team);
     List<Trainer> getTrainers();
     List<Transfer> getTransfers();
     List<Team> getLeagueTeams(String targetLeague);
     Team getTeamByName(String targetTeamName);
 
-    void promoteTeam(Team team);
+    boolean promoteTeam(Team team);
     boolean relegateTeam(Team team);
 
     void transferPlayer(Player player, Team newTeam);

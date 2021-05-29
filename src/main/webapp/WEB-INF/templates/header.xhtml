@@ -43,6 +43,12 @@
                                 <h:outputLink
                                         value="#{request.contextPath}/faces/pages/transfers/transferPlayer.xhtml">Transfer</h:outputLink>
                             </c:when>
+                            <c:when test="#{request.isUserInRole('leagueManager') || request.isUserInRole('trainer')}">
+                                <h:outputLink
+                                        value="#{request.contextPath}/faces/pages/players/changePlayerNumber.xhtml">Change &#128085; n#</h:outputLink>
+                                <h:outputLink
+                                        value="#{request.contextPath}/faces/pages/players/addNewPlayer.xhtml">Add new player</h:outputLink>
+                            </c:when>
                         </c:choose>
                     </div>
                 </div>

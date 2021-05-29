@@ -45,6 +45,15 @@ public class FootballBean implements Football {
     }
 
     @Override
+    public List<Player> getPlayersByTeam(Team team){
+        System.out.println("FootballBean - getPlayersByTeam");
+        Query query = em.createQuery("SELECT p FROM Team t, IN (t.contingent) p WHERE t.id = " + team.getId() + " ORDER BY p.lastname, p.firstname");
+
+
+        return (ArrayList<Player>) query.getResultList();
+    }
+
+    @Override
     public List<Trainer> getTrainers() {
 
         System.out.println("FootballBean - getTrainers");
@@ -76,22 +85,24 @@ public class FootballBean implements Football {
     }
 
     @Override
-    public void promoteTeam(Team team) {
+    public boolean promoteTeam(Team team) {
         System.out.println("FootballBean - promoteTeam");
-        System.out.println(ctx.getCallerPrincipal().getName() + " wants to promote a team");
+        String country = team.getCurrentLeague().getCountry().getName();
+        int division = team.getCurrentLeague().getDivision();
 
-        if(ctx.isCallerInRole("leagueManager")
-            || ctx.isCallerInRole("administrator")) {
-            String country = team.getCurrentLeague().getCountry().getName();
-            int division = team.getCurrentLeague().getDivision();
+        Query query = em.createQuery("FROM League l WHERE l.country.name = '" + country + "' and l.division = " + (division - 1) + "");
 
-            Query query = em.createQuery("FROM League l WHERE l.country.name = '" + country + "' and l.division = " + (division - 1) + "");
+        try {
             League newLeague = (League) query.getSingleResult();
             newLeague.addTeam(team);
+            System.out.println(team);
+            System.out.println(newLeague);
             em.persist(newLeague);
             em.merge(team);
-        } else {
-            System.out.println(ctx.getCallerPrincipal().getName() + " can't promote a team");
+            return true;
+        } catch (NoResultException nre) {
+            System.out.println("FootballBean - promoteTeam - No league above current league.");
+            return false;
         }
     }
 
@@ -131,7 +142,6 @@ public class FootballBean implements Football {
         int[] stats = {0, 0, 0, 0, 0};
         System.out.println("FootballBean - getLeagueTeams for " + targetLeague);
         Query query = em.createQuery("SELECT team.contingent FROM League l, in(l.teams) team  WHERE l.name = '" + targetLeague + "'");
-        //Query query = em.createQuery("SELECT t.contingent FROM Team t WHERE t.currentLeague.name = '"+targetLeague+"'");
         ArrayList<Player> playersInLeague = (ArrayList<Player>) query.getResultList();
         if (playersInLeague.size() > 0) {
             int totalPlayersInLeague = playersInLeague.size();
