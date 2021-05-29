@@ -19,7 +19,7 @@
          <c:when test="#{request.isUserInRole('leagueManager') || request.isUserInRole('administrator')}">
             <h:form>
                <h:outputText value="Select the player to update : "/>
-               <h:selectOneMenu value="#{mainBean.playerToUpdate}" valueChangeListener="#{mainBean.updateTargetPlayer}"
+               <h:selectOneMenu value="#{mainBean.targetPlayer}" valueChangeListener="#{mainBean.updateTargetPlayer}"
                                 onchange="submit()">
                   <f:selectItems value="#{mainBean.playerNames}"/>
                </h:selectOneMenu>
