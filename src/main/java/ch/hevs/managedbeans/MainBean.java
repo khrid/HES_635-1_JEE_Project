@@ -21,6 +21,7 @@ public class MainBean {
     private String foo;
     private String currentURL;
     private boolean clearState = false;
+    public static final String NOT_AUTHORIZED_MESSAGE = "You are not authorized to perform this operation";
 
     // League
     private String targetLeague;
@@ -111,6 +112,39 @@ public class MainBean {
         }else{
             updateLeagueTeams(targetLeague);
         }
+    }
+
+    public void refreshPlayersList(){
+        players = football.getPlayers();
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("trainer")) {
+            playersToManage = football.getPlayersByTeam(connectedTrainer.getCurrentTeam());
+        }else{
+            playersToManage = players;
+        }
+        this.playerNames = new ArrayList<>();
+        for (Player p : playersToManage) {
+            this.playerNames.add(p.getFirstname() + " " + p.getLastname());
+        }
+
+        targetPlayerObject = playersToManage.get(0);
+        targetPlayer = playersToManage.get(0).getLastname() + " " + playersToManage.get(0).getFirstname();
+
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("player")) {
+            String info = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+            String prenom = info.split("\\.")[0];
+            String nom = info.split("\\.")[1];
+            for (Player p :
+                    playersToManage) {
+                if(p.getFirstname().equalsIgnoreCase(prenom) && p.getLastname().equalsIgnoreCase(nom)) {
+                    playerToUpdate = p;
+                    break;
+                }
+            }
+        }else{
+            playerToUpdate = playersToManage.get(0);
+        }
+
+        targetPosition = playerToUpdate.getPosition();
     }
 
     private void checkLastname(Player p){
@@ -274,27 +308,39 @@ public class MainBean {
     public String promoteTeam() {
         messages.clear();
 
-        if(football.promoteTeam(targetTeam)){
-            leagues = football.getLeagues();
-            messages.add(targetTeam.getName() + " successfully promoted");
-            return "promotionRelegationSuccess";
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("administrator") ||
+                FacesContext.getCurrentInstance().getExternalContext().isUserInRole("leagueManager")){
+            if(football.promoteTeam(targetTeam)){
+                leagues = football.getLeagues();
+                messages.add(targetTeam.getName() + " successfully promoted");
+                return "promotionRelegationSuccess";
+            }else{
+                messages.add("Can't promote team because it is already in highest division");
+            }
         }else{
-            messages.add("Can't promote team because it is already in highest division");
-            return "showTeamToManage";
+            messages.add(NOT_AUTHORIZED_MESSAGE);
         }
+
+        return "";
     }
 
     public String relegateTeam() {
         messages.clear();
 
-        if(football.relegateTeam(targetTeam)){
-            leagues = football.getLeagues();
-            messages.add(targetTeam.getName() + " successfully relegated");
-            return "promotionRelegationSuccess";
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("administrator") ||
+                FacesContext.getCurrentInstance().getExternalContext().isUserInRole("leagueManager")){
+            if(football.relegateTeam(targetTeam)){
+                leagues = football.getLeagues();
+                messages.add(targetTeam.getName() + " successfully relegated");
+                return "promotionRelegationSuccess";
+            }else{
+                messages.add("Can't relegate team because it is already in lowest division");
+            }
         }else{
-            messages.add("Can't relegate team because it is already in lowest division");
-            return "showTeamToManage";
+            messages.add(NOT_AUTHORIZED_MESSAGE);
         }
+
+        return "";
     }
 
     public String promotionRelegationDone(){
@@ -303,14 +349,21 @@ public class MainBean {
     }
 
     public String getStatistics() {
-        targetLeague = targetLeague.split(" - ")[1];
-        System.out.println("getStatistics - targetLeague=" + targetLeague);
-        int[] stats = football.getLeagueStatistics(targetLeague);
-        if(stats[4] == 1) {
-            setStats(stats);
-            return "leagueStats";
+        messages.clear();
+
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("administrator") ||
+                FacesContext.getCurrentInstance().getExternalContext().isUserInRole("leagueManager")){
+            targetLeague = targetLeague.split(" - ")[1];
+            System.out.println("getStatistics - targetLeague=" + targetLeague);
+            int[] stats = football.getLeagueStatistics(targetLeague);
+            if(stats[4] == 1) {
+                setStats(stats);
+                return "leagueStats";
+            }
+        }else{
+            messages.add(NOT_AUTHORIZED_MESSAGE);
         }
-        return "selectLeague";
+        return "";
     }
 
 
@@ -380,25 +433,31 @@ public class MainBean {
 
     public String updateNumber() {
         messages.clear();
-        isValid = true;
 
-        checkNumber(newNumber);
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("administrator") ||
+                FacesContext.getCurrentInstance().getExternalContext().isUserInRole("trainer")){
+            isValid = true;
 
-        if(targetPlayerObject.getNumber() == newNumber) {
-            System.out.println("updateNumber - new and old number are the same");
-            messages.add(targetPlayer + " number is already #" + newNumber);
-            isValid = false;
-        }
+            checkNumber(newNumber);
 
-        if(isValid){
-            targetPlayerObject.setNumber(newNumber);
-            football.updatePlayerInfo(targetPlayerObject);
-            messages.add(targetPlayer + " number successfully updated to #" + targetPlayerObject.getNumber());
-            clearState = true;
-            return "changePlayerNumberSuccess";
+            if(targetPlayerObject.getNumber() == newNumber) {
+                System.out.println("updateNumber - new and old number are the same");
+                messages.add(targetPlayer + " number is already #" + newNumber);
+                isValid = false;
+            }
+
+            if(isValid) {
+                targetPlayerObject.setNumber(newNumber);
+                football.updatePlayerInfo(targetPlayerObject);
+                messages.add(targetPlayer + " number successfully updated to #" + targetPlayerObject.getNumber());
+                clearState = true;
+                return "changePlayerNumberSuccess";
+            }
         }else{
-            return "";
-        }
+                messages.add(NOT_AUTHORIZED_MESSAGE);
+            }
+
+        return "";
     }
 
     public String makeNewNumberUpdate(){
@@ -408,34 +467,41 @@ public class MainBean {
 
     public String createNewPlayer() {
         messages.clear();
-        isValid = true;
 
-        // Limitation actuelle : on ne créé que des joueurs Suisse
-        Country c = new Country("Switzerland", "CH");
-        newPlayer.setNationality(c);
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("administrator") ||
+                FacesContext.getCurrentInstance().getExternalContext().isUserInRole("trainer")){
+            isValid = true;
 
-        newPlayer.setPosition(targetPosition);
+            // Limitation actuelle : on ne créé que des joueurs Suisse
+            Country c = new Country("Switzerland", "CH");
+            newPlayer.setNationality(c);
 
-        checkLastname(newPlayer);
-        checkFirstname(newPlayer);
-        checkTeam();
-        checkNumber(newPlayer.getNumber());
-        checkHeight(newPlayer);
-        checkWeight(newPlayer);
-        checkDateOfBirth(newPlayer);
+            newPlayer.setPosition(targetPosition);
 
-        if(isValid){
-            football.createNewPlayer(newPlayer, targetTeam);
-            refreshPlayersList();
-            refreshLeagueTeams();
-            messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully registred");
-            initializeNewPlayer();
-            clearState = true;
-            return "addNewPlayerSuccess";
+            checkLastname(newPlayer);
+            checkFirstname(newPlayer);
+            checkTeam();
+            checkNumber(newPlayer.getNumber());
+            checkHeight(newPlayer);
+            checkWeight(newPlayer);
+            checkDateOfBirth(newPlayer);
+
+            if(isValid){
+                football.createNewPlayer(newPlayer, targetTeam);
+                refreshPlayersList();
+                refreshLeagueTeams();
+                messages.add(newPlayer.getFirstname() + " " + newPlayer.getLastname() + " successfully registred");
+                initializeNewPlayer();
+                clearState = true;
+                return "addNewPlayerSuccess";
+            }else{
+                messages.add(0,"Following errors occured :");
+            }
         }else{
-            messages.add(0,"Following errors occured :");
-            return "";
+            messages.add(NOT_AUTHORIZED_MESSAGE);
         }
+
+        return "";
     }
 
     public String makeNewPlayerInsertion(){
@@ -445,60 +511,34 @@ public class MainBean {
 
     public String updatePlayerInfo(){
         messages.clear();
-        isValid = true;
 
-        playerToUpdate.setPosition(targetPosition);
+        if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("administrator") ||
+                FacesContext.getCurrentInstance().getExternalContext().isUserInRole("player")) {
+            isValid = true;
 
-        checkLastname(playerToUpdate);
-        checkFirstname(playerToUpdate);
-        checkDateOfBirth(playerToUpdate);
+            playerToUpdate.setPosition(targetPosition);
 
-        if(isValid){
-            football.updatePlayerInfo(playerToUpdate);
-            messages.add(playerToUpdate.getFirstname() + " " + playerToUpdate.getLastname() + " successfully updated");
-            clearState = true;
-            return "updatePlayerInfoSuccess";
+            checkLastname(playerToUpdate);
+            checkFirstname(playerToUpdate);
+            checkDateOfBirth(playerToUpdate);
+
+            if(isValid){
+                football.updatePlayerInfo(playerToUpdate);
+                messages.add(playerToUpdate.getFirstname() + " " + playerToUpdate.getLastname() + " successfully updated");
+                clearState = true;
+                return "updatePlayerInfoSuccess";
+            }else{
+                messages.add(0,"Following errors occured :");
+            }
         }else{
-            messages.add(0,"Following errors occured :");
-            return "";
+            messages.add(NOT_AUTHORIZED_MESSAGE);
         }
+        return "";
     }
 
     public String makeNewPlayerInfoUpdate(){
         messages.clear();
         return "updatePlayerInfo";
-    }
-
-    public void refreshPlayersList(){
-        players = football.getPlayers();
-        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("trainer")) {
-            playersToManage = football.getPlayersByTeam(connectedTrainer.getCurrentTeam());
-        }else{
-            playersToManage = players;
-        }
-        this.playerNames = new ArrayList<>();
-        for (Player p : playersToManage) {
-            this.playerNames.add(p.getFirstname() + " " + p.getLastname());
-        }
-
-        targetPlayerObject = playersToManage.get(0);
-
-        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("player")) {
-            String info = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-            String prenom = info.split("\\.")[0];
-            String nom = info.split("\\.")[1];
-            for (Player p :
-                    playersToManage) {
-                if(p.getFirstname().equalsIgnoreCase(prenom) && p.getLastname().equalsIgnoreCase(nom)) {
-                    playerToUpdate = p;
-                    break;
-                }
-            }
-        }else{
-            playerToUpdate = playersToManage.get(0);
-        }
-
-        targetPosition = playerToUpdate.getPosition();
     }
 
 
@@ -560,18 +600,23 @@ public class MainBean {
     public String transferPlayer(){
         messages.clear();
 
-        if(targetPlayerObject.getCurrentTeam().getId() == targetTeam.getId()) {
-            System.out.println("transferPlayer - new and old team are the same");
-            messages.add(targetPlayer + " already plays for " + targetTeamName);
-            return "";
-        }else {
-            football.transferPlayer(targetPlayerObject, targetTeam);
-            transfers = football.getTransfers();
-            refreshLeagueTeams();
-            messages.add(targetPlayer + " successfully transfered to " + targetTeamName);
-            clearState = true;
-            return "transferPlayerSuccess";
+        if (FacesContext.getCurrentInstance().getExternalContext().isUserInRole("administrator")) {
+            if(targetPlayerObject.getCurrentTeam().getId() == targetTeam.getId()) {
+                System.out.println("transferPlayer - new and old team are the same");
+                messages.add(targetPlayer + " already plays for " + targetTeamName);
+            }else {
+                football.transferPlayer(targetPlayerObject, targetTeam);
+                transfers = football.getTransfers();
+                refreshLeagueTeams();
+                messages.add(targetPlayer + " successfully transfered to " + targetTeamName);
+                clearState = true;
+                return "transferPlayerSuccess";
+            }
+        }else{
+            messages.add(NOT_AUTHORIZED_MESSAGE);
         }
+
+        return "";
     }
 
     public String makeNewTransfer(){

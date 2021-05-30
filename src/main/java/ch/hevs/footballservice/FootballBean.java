@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
+
+@TransactionAttribute(value = TransactionAttributeType.REQUIRED)
+
 public class FootballBean implements Football {
 
     @Resource
@@ -129,7 +132,7 @@ public class FootballBean implements Football {
     }
 
     @Override
-    @TransactionAttribute(value = TransactionAttributeType.REQUIRED)
+    @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
     public void transferPlayer(Player player, Team newTeam) {
         Transfer transfer = new Transfer(LocalDateTime.now(), player, player.getCurrentTeam(), newTeam);
         em.persist(transfer);
