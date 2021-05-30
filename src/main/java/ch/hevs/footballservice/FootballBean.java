@@ -141,33 +141,10 @@ public class FootballBean implements Football {
     }
 
     @Override
-    public int[] getLeagueStatistics(String targetLeague) {
-        int[] stats = {0, 0, 0, 0, 0};
+    public List<Player> getLeagueStatistics(String targetLeague) {
         System.out.println("FootballBean - getLeagueTeams for " + targetLeague);
         Query query = em.createQuery("SELECT team.contingent FROM League l, in(l.teams) team  WHERE l.name = '" + targetLeague + "'");
-        ArrayList<Player> playersInLeague = (ArrayList<Player>) query.getResultList();
-        if (playersInLeague.size() > 0) {
-            int totalPlayersInLeague = playersInLeague.size();
-            int[] totaux = {totalPlayersInLeague, 0, 0, 0};
-            for (Player p :
-                    playersInLeague) {
-                totaux[1] += p.getAge();
-                totaux[2] += p.getHeight();
-                totaux[3] += p.getWeight();
-            }
-
-            stats[0] = totaux[0];
-            stats[1] = totaux[1] / totalPlayersInLeague;
-            stats[2] = totaux[2] / totalPlayersInLeague;
-            stats[3] = totaux[3] / totalPlayersInLeague;
-            stats[4] = 1;
-
-            System.out.println(totalPlayersInLeague + " players in " + targetLeague);
-            System.out.println("Average age is " + stats[0] + "yo");
-            System.out.println("Average height is " + stats[1] + "cm");
-            System.out.println("Average weight is " + stats[2] + "kg");
-        }
-        return stats;
+        return (ArrayList<Player>) query.getResultList();
     }
 
     @Override

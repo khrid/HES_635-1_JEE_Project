@@ -19,7 +19,7 @@ public interface Football {
     boolean relegateTeam(Team team);
 
     void transferPlayer(Player player, Team newTeam);
-    int[] getLeagueStatistics(String targetLeague);
+    List<Player> getLeagueStatistics(String targetLeague);
     void createNewPlayer(Player player, Team team);
     void updatePlayerInfo(Player player);
 }
