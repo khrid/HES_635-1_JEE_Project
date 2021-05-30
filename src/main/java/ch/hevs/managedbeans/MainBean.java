@@ -114,7 +114,7 @@ public class MainBean {
         }
     }
 
-    public void refreshPlayersList(){
+    private void refreshPlayersList(){
         players = football.getPlayers();
         if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("trainer")) {
             playersToManage = football.getPlayersByTeam(connectedTrainer.getCurrentTeam());
@@ -320,6 +320,7 @@ public class MainBean {
         }else{
             messages.add(NOT_AUTHORIZED_MESSAGE);
         }
+        return "";
     }
 
     public String relegateTeam() {
@@ -337,6 +338,7 @@ public class MainBean {
         }else{
             messages.add(NOT_AUTHORIZED_MESSAGE);
         }
+        return "";
     }
 
     public String promotionRelegationDone(){
@@ -345,30 +347,36 @@ public class MainBean {
     }
 
     public String getStatistics() {
-        targetLeague = targetLeague.split(" - ")[1];
-        System.out.println("getStatistics - targetLeague=" + targetLeague);
-        ArrayList<Player> playersInLeague = (ArrayList<Player>) football.getLeagueStatistics(targetLeague);
+        if(FacesContext.getCurrentInstance().getExternalContext().isUserInRole("administrator") ||
+                FacesContext.getCurrentInstance().getExternalContext().isUserInRole("leagueManager")){
+            targetLeague = targetLeague.split(" - ")[1];
+            System.out.println("getStatistics - targetLeague=" + targetLeague);
+            ArrayList<Player> playersInLeague = (ArrayList<Player>) football.getLeagueStatistics(targetLeague);
 
-        if (playersInLeague.size() > 0) {
-            int[] stats = new int[]{0,0,0,0,0};
-            int totalPlayersInLeague = playersInLeague.size();
-            int[] totaux = {totalPlayersInLeague, 0, 0, 0};
-            for (Player p :
-                    playersInLeague) {
-                totaux[1] += p.getAge();
-                totaux[2] += p.getHeight();
-                totaux[3] += p.getWeight();
+            if (playersInLeague.size() > 0) {
+                int[] stats = new int[]{0, 0, 0, 0, 0};
+                int totalPlayersInLeague = playersInLeague.size();
+                int[] totaux = {totalPlayersInLeague, 0, 0, 0};
+                for (Player p :
+                        playersInLeague) {
+                    totaux[1] += p.getAge();
+                    totaux[2] += p.getHeight();
+                    totaux[3] += p.getWeight();
+                }
+
+                stats[0] = totaux[0];
+                stats[1] = totaux[1] / totalPlayersInLeague;
+                stats[2] = totaux[2] / totalPlayersInLeague;
+                stats[3] = totaux[3] / totalPlayersInLeague;
+                stats[4] = 1;
+
+                setStats(stats);
+                return "leagueStats";
             }
-
-            stats[0] = totaux[0];
-            stats[1] = totaux[1] / totalPlayersInLeague;
-            stats[2] = totaux[2] / totalPlayersInLeague;
-            stats[3] = totaux[3] / totalPlayersInLeague;
-            stats[4] = 1;
-
-            setStats(stats);
-            return "leagueStats";
+        }else{
+            messages.add(NOT_AUTHORIZED_MESSAGE);
         }
+
         return "selectLeague";
     }
 
