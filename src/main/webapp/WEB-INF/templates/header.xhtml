@@ -20,7 +20,6 @@
     <c:choose>
         <c:when test="#{request.isUserInRole('trainer')
                         || request.isUserInRole('player')
-                        || request.isUserInRole('leagueManager')
                         || request.isUserInRole('administrator')}">
             <div class="dropdown">
                 <button class="dropbtn">Manage players
@@ -93,6 +92,8 @@
     <div class="right">
         <c:choose>
             <c:when test="#{request.isUserInRole('player')}">&#9917;</c:when>
+            <c:when test="#{request.isUserInRole('trainer')}">&#128104;&#8205;&#128188;</c:when>
+            <c:when test="#{request.isUserInRole('leagueManager')}">&#129333;&#127995;&#8205;</c:when>
             <c:when test="#{request.isUserInRole('administrator')}">&#129464;</c:when>
             <c:otherwise>&#128100;</c:otherwise>
         </c:choose>
