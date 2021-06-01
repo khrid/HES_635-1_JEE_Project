@@ -313,6 +313,7 @@ public class MainBean {
             if(football.promoteTeam(targetTeam)){
                 leagues = football.getLeagues();
                 messages.add(targetTeam.getName() + " successfully promoted");
+                clearState = true;
                 return "promotionRelegationSuccess";
             }else{
                 messages.add("Can't promote team because it is already in highest division");
@@ -331,6 +332,7 @@ public class MainBean {
             if(football.relegateTeam(targetTeam)){
                 leagues = football.getLeagues();
                 messages.add(targetTeam.getName() + " successfully relegated");
+                clearState = true;
                 return "promotionRelegationSuccess";
             }else{
                 messages.add("Can't relegate team because it is already in lowest division");
